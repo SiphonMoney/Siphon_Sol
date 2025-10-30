@@ -1,6 +1,6 @@
 <div align="left">
 
-# 🌊 Siphon Protocol
+# Siphon Protocol
 
 > **Enabling untraceable, hyperliquid and institutional-grade DeFi privacy**
 
@@ -91,7 +91,7 @@
 </tr>
 </table>
 
-<img src="https://raw.githubusercontent.com/undefinedlab/siphon_money/main/docs/protocol.png" alt="Siphon Architecture Diagram" width="100%" />
+![Siphon Architecture Diagram](./docs/protocol.png)
 
 
 ---
@@ -142,6 +142,24 @@ Secure, composable, and composable foundation for DeFi.
   </td>
   </tr>
 </table>
+
+
+### 🔗 Matching Engine Submodule
+
+This repository includes the dark pool matching engine as a Git submodule at `matching-engine/`.
+
+```bash
+# If you cloned without submodules, initialize now
+git submodule update --init --recursive
+
+# To pull latest changes from the submodule
+git submodule update --remote --merge
+```
+
+For details about the matching engine architecture and specs, see:
+
+- [Overall System Architecture](https://github.com/arnabnandikgp/matching-engine/blob/main/Overall_system_architecture.md)
+- [Technical Overview Presentation](https://github.com/arnabnandikgp/matching-engine/blob/main/TECHNICAL_OVERVIEW_PRESENTATION.md)
 
 
 ### The Five-Layer Architecture:
