@@ -91,7 +91,7 @@
 </tr>
 </table>
 
-<img src="https://github.com/undefinedlab/siphon_money/blob/master/docs/protocol.png" alt="Siphon Architecture Diagram" width="100%" />
+<img src="https://raw.githubusercontent.com/undefinedlab/siphon_money/main/docs/protocol.png" alt="Siphon Architecture Diagram" width="100%" />
 
 
 ---
@@ -297,7 +297,7 @@ npm run dev
 
 ### 🚀 Getting Started
 
-1. **Fork** the repository
+1. **Fokr** the repository
 2. **Clone with submodules** (`git clone --recurse-submodules`)
 3. **Create** a feature branch (`git checkout -b feature/privacy-enhancement`)
 4. **Commit** your changes (`git commit -m 'Add privacy feature'`)
@@ -317,6 +317,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 ---
 
 <div align="center">
+
 
 ## 🌊 **Siphon Protocol**
 </div>
