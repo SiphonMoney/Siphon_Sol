@@ -15,7 +15,7 @@
 </div>
 
 ---
- 
+
 ## 🎯 The Problem We Solve
 
 ### ⚠️ Three Critical Privacy Crises in DeFi:
@@ -24,8 +24,8 @@
 <tr>
 <td width="33%">
 
-
 #### 🔍 **Wallets Are Tracked**
+
 - **Chain analytics links addresses** timing, and flows into identities.
 - **Your PNL**, history and every move are visible.
 
@@ -33,13 +33,15 @@
 <td width="33%">
 
 #### 🤖 **Value is Extracted**
-- **Visible flow**  widens quotes and worsens fills.
-- **Sniping and MEV**  extraction destroys profitability.
+
+- **Visible flow** widens quotes and worsens fills.
+- **Sniping and MEV** extraction destroys profitability.
 
 </td>
 <td width="33%">
 
 #### 💰 **Liquidity is Siloed**
+
 - **Privacy coins** and pools lack DeFi integration
 - **Users forced** to choose: privacy OR best execution
 
@@ -48,7 +50,8 @@
 </table>
 
 ### 📊 Market Reality
-- **$300M+** lost monthly to front-running attacks on DEXs 
+
+- **$300M+** lost monthly to front-running attacks on DEXs
 - **$12B** in privacy coin market cap lacks DeFi integration
 - **Zero** truly private DEXs with easy access to global liquidity
 
@@ -59,8 +62,8 @@
 ### 🌉 **The Solana Privacy Box**
 
 **Siphon serves as the seamless privacy-preserving gateway between public and private capital, facilitating secure, private and verifiable movement of assets across multiple blockchains. By enabling frictionless access to the deepest, most liquid DeFi opportunities in a true omnichain environment, Siphon empowers institutions and individuals alike to transact and deploy strategies at scale—without sacrificing confidentiality, competitive edge, or market efficiency.**
-</div>
 
+</div>
 
 ### ✨ Key Features
 
@@ -68,50 +71,86 @@
 <tr>
 <td width="50%">
 
-#### 🔒 **Private Identity** 
-- Portfolio, PnL, and strategies are no longer visible on-chain
-- Encrypted state management
+### 🔒 Privacy-First Design
 
-#### ⚡ **Private execution**
-- Eliminates order sniffing and MEV extraction
-- Private transaction routing
+- **Encrypted Balances**: User balances stored as `Enc<Shared, Balances>` - users can decrypt their own data using x25519 keys
+- **Confidential Orderbook**: Orders encrypted with `Enc<Mxe, OrderBook>` - only MPC network can process
+- **Dark Pool Matching**: Order matching happens on encrypted data without revealing prices or quantities
 
+### 🔐 MPC-Powered Operations
+
+- **Balance Validation**: MPC verifies encrypted balances before withdrawals
+- **Order Matching**: Confidential computation finds matching orders without exposing trader information
+- **Cryptographic Guarantees**: All operations verified through secure multi-party computation
+
+### 💰 Secure Liquidity Management
+
+- **Deposit Flow**: `deposit_to_ledger` → SPL transfer → MPC updates encrypted balance
+- **Withdrawal Flow**: Two-step process:
+  1. `withdraw_from_ledger_verify` - MPC validates sufficient balance
+  2. `withdraw_from_vault` - Cranker bot executes token transfer
+- **Vault Security**: PDA-based vault authority ensures only authorized withdrawals
+
+### 📡 Event-Driven Architecture
+
+- **Real-time Updates**: WebSocket push notifications for balance changes, order fills, withdrawals
+- **Event Types**:
+  - `UserLedgerInitializedEvent`
+  - `UserLedgerDepositedEvent`
+  - `UserLedgerWithdrawVerifiedSuccessEvent` / `FailedEvent`
+  - `WithdrawEvent`
+  - `OrderProcessedEvent` / `MatchResultEvent`
+- **Persistent Storage**: Backend indexer stores events in PostgreSQL for historical queries
+
+### 🛡️ Security Features
+
+- **Nonce-based Encryption**: Each encrypted state includes nonce for replay protection
+- **Computation Verification**: All MPC computations verified before state updates
+- **Cranker Bot Authentication**: Hardcoded public key ensures only authorized bot executes withdrawals
+- **PDA-based Access Control**: Solana PDAs enforce program-level security
+
+## Technical Stack
+
+- **Blockchain**: Solana (localnet/devnet)
+- **MPC Framework**: Arcium Network
+- **Smart Contract**: Anchor Framework (Rust)
+- **Encryption**: x25519 (user keys), Rescue cipher (balance encryption)
+- **Frontend**: React + TypeScript + Zustand
+- **Backend**: Node.js event indexer + PostgreSQL
+- **Testing**: TypeScript + Mocha/Chai
 </td>
 <td width="50%">
 
-#### 💰 **Better Pricing**
-- Cheaper transaction prices through optimized execution
-- Reduced slippage through privacy-preserving routing
-
-#### 🌐 **Omnichain Routing**
+<!-- #### 🌐 **Omnichain Routing**
 - Hyperliquid execution across multiple chains
 - Privacy preserved end-to-end
 
 </td>
 </tr>
-</table>
+</table> -->
 
 ![Siphon Architecture Diagram](./docs/protocol.png)
-
 
 ---
 
 ## 🛠️ Technical Architecture
 
 ### 🔧 Core Technologies
+
 <table>
   <tr>
     <td width="33%" align="center">
 
-#### 🔐 **In-App settlement**  
+#### 🔐 **In-App settlement**
+
 **In app ledger based secure settlement**  
 No one else except for the user will know about their funds and placed orders
 
   </td>
     <td width="33%" align="center">
 
+#### 🌉 \*_ Arcium (MPC)_
 
-#### 🌉 ** Arcium (MPC)*  
 **Multi‑Party Computation Execution**  
 Decentralized MPC network for private, verifiable off‑chain/on‑chain computation
 
@@ -121,14 +160,14 @@ Decentralized MPC network for private, verifiable off‑chain/on‑chain computa
   <tr>
     <td width="33%" align="center">
 
-#### ⚙️ **Solana**  
+#### ⚙️ **Solana**
+
 **Execution & Settlement Layer**  
 Secure, composable, and composable foundation for DeFi.
 
   </td>
   </tr>
 </table>
-
 
 ### 🔗 Matching Engine Submodule
 
@@ -147,57 +186,63 @@ For details about the matching engine architecture and specs, see:
 - [Overall System Architecture](https://github.com/arnabnandikgp/matching-engine/blob/main/Overall_system_architecture.md)
 - [Technical Overview Presentation](https://github.com/arnabnandikgp/matching-engine/blob/main/TECHNICAL_OVERVIEW_PRESENTATION.md)
 
-
 ### The Five-Layer Architecture:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 5: Liquidity Interface                                │
-│ - Public DEX aggregators                                    │
-│ - Cross-chain bridges                                       │
-│ - Modular design for privacy-native assets                  │
+│ Layer 5: User Interface & Event System                      │
+│ - Real-time WebSocket event streaming                       │
+│ - User-decryptable encrypted balances (Shared encryption)   │
+│ - Frontend React integration with x25519 key management     │
+│ - Event indexer + PostgreSQL persistence                    │
 └─────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 4: Verification & Settlement                          │
-│ - ZK proof of correct execution                             │
-│ - On-chain verification                                     │
-│ - Cryptographic guarantees                                  │
+│ Layer 4: Settlement & Withdrawal                            │
+│ - Two-step withdrawal verification (MPC → Cranker)          │
+│ - Cryptographic balance validation before token transfer    │
+│ - Cranker bot for automated vault execution                 │
+│ - Event-driven settlement triggers                          │
 └─────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 3: Confidential Execution Environment (FHE Engine)    │
-│ - Encrypted mempool                                         │
-│ - Computation on encrypted data                             │
-│ - Order matching & slippage calculation                     │
+│ Layer 3: MPC Computation Layer (Arcium Network)             │
+│ - Encrypted order book (Mxe encryption)                     │
+│ - Confidential order matching on encrypted data             │
+│ - Private balance updates with MPC validation               │
+│ - Order matching without revealing prices/quantities        │
 └─────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 2: Shielded Pool                                      │
-│ - Incremental Merkle trees                                  │
-│ - Zero-knowledge membership proofs                          │
-│ - Nullifier system for double-spend prevention              │
+│ Layer 2: Encrypted State Management                         │
+│ - UserPrivateLedger: User-decryptable balances (Shared)     │
+│ - OrderBookState: MPC-only encrypted orderbook (Mxe)        │
+│ - Nonce-based encryption for replay protection              │
+│ - On-chain encrypted state storage                          │
 └─────────────────────────────────────────────────────────────┘
 ┌─────────────────────────────────────────────────────────────┐
-│ Layer 1: Vault Contract                                     │
-│ - Trustless escrow for public assets                        │
-│ - ETH, USDC, WBTC and more                                  │
-│ - Release on valid ZK proof verification                    │
+│ Layer 1: Vault & Token Management                           │
+│ - SPL token vaults with PDA authority                       │
+│ - Deposit: Public tokens → Encrypted balances               │
+│ - Withdraw: MPC-verified → Cranker-executed transfers       │
+│ - Base/Quote token pairs (SOL/USDC, etc.)                   │
 └─────────────────────────────────────────────────────────────┘
 ```
-
 
 ## ⚖️ Compliance & Regulatory Considerations
 
 Siphon Protocol should integrate multiple compliance mechanisms to address regulatory requirements while maintaining core privacy principles:
 
 ### 🛡️ Risk Screening Gate
+
 - **On-Chain Risk Oracle Integration**: Funds entering the Siphon Vault must pass validation through established risk oracles (e.g., Chainalysis, TRM, or in-protocol scoring systems)
 - **Source Verification**: Addresses are screened against known restricted or sanctioned lists before admission
 
 ### 🔐 Zero-Knowledge Proof of Compliance
+
 - **Privacy-Preserving Verification**: Users can prove they meet KYC/AML requirements without revealing identity
 - **Compliant Service Provider Integration**: Works with compliance providers to generate non-revealing proofs
 - **Address Sanctioning**: Demonstrates funds are not from restricted address lists, cryptographically
 
 ### 📊 Verifiable Transparency Layer
+
 - **Per-Batch Proofs**: Each execution batch emits a zero-knowledge event proving:
   - Encrypted trades were executed correctly
   - State updates followed protocol rules
@@ -208,13 +253,10 @@ Siphon Protocol should integrate multiple compliance mechanisms to address regul
 
 > **Note**: These compliance mechanisms are part of the architectural design and serve to demonstrate how privacy and regulatory compliance can coexist. Real-world implementation would require integration with licensed compliance service providers and legal frameworks.
 
-
-
 ### 🚀 DarkPool Workflow
 
-
-
 #### 1. **Encrypted Order Submission**
+
 ```rust
 // Orders encrypted with x25519 + RescueCipher
 let encrypted_order = Enc<Shared, OrderData> {
@@ -226,11 +268,13 @@ let encrypted_order = Enc<Shared, OrderData> {
 ```
 
 #### 2. **Confidential Matching Process**
+
 - **MPC network** decrypts orderbook confidentially
 - **Price-time priority** matching executed off-chain
 - **Results encrypted** for blind access
 
 #### 3. **Private Settlement Execution**
+
 - **Backend decrypts** match results using match nonce
 - **SPL token transfers** executed on Solana
 - **Encrypted vault balances** updated
@@ -239,7 +283,7 @@ let encrypted_order = Enc<Shared, OrderData> {
 ### 🔒 Unbreakable Privacy
 
 - **Order amounts/prices**: Never stored in plaintext
-- **Orderbook structure**: Hidden in encrypted ciphertext  
+- **Orderbook structure**: Hidden in encrypted ciphertext
 - **Match execution**: Only revealed to matched parties
 - **Vault balances**: Encrypted state management
 - **Transaction history**: Zero-knowledge proofs only
@@ -251,7 +295,7 @@ let encrypted_order = Enc<Shared, OrderData> {
 
 ### 📋 Prerequisites
 
-- **Node.js** 18+ 
+- **Node.js** 18+
 - **Rust** 1.75+ with Solana toolchain
 - **Solana CLI** 1.18+
 - **Anchor Framework** 0.31.1
@@ -285,14 +329,14 @@ npm run dev
 
 ### 📜 Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | 🚀 Start development server |
-| `npm run build` | 🏗️ Build for production |
-| `npm run start` | ▶️ Start production server |
-| `npm run lint` | 🔍 Run ESLint |
-| `npm run test` | 🧪 Run tests |
-| `arcium test` | 🔒 Test dark pool matching engine |
+| Command         | Description                       |
+| --------------- | --------------------------------- |
+| `npm run dev`   | 🚀 Start development server       |
+| `npm run build` | 🏗️ Build for production           |
+| `npm run start` | ▶️ Start production server        |
+| `npm run lint`  | 🔍 Run ESLint                     |
+| `npm run test`  | 🧪 Run tests                      |
+| `arcium test`   | 🔒 Test dark pool matching engine |
 
 ---
 
@@ -321,6 +365,6 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-
 ## 🌊 **Siphon Protocol**
+
 </div>
