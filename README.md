@@ -67,9 +67,6 @@
 
 ### ✨ Key Features
 
-<table>
-<tr>
-<td width="50%">
 
 ### 🔒 Privacy-First Design
 
@@ -118,8 +115,7 @@
 - **Frontend**: React + TypeScript + Zustand
 - **Backend**: Node.js event indexer + PostgreSQL
 - **Testing**: TypeScript + Mocha/Chai
-</td>
-<td width="50%">
+
 
 <!-- #### 🌐 **Omnichain Routing**
 - Hyperliquid execution across multiple chains
