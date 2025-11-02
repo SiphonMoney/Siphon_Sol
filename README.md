@@ -234,25 +234,23 @@ sequenceDiagram
 - ✅ Deposit flow
 - ✅ Two-step withdrawal
 - ✅ Event emission
-- ⏳ Frontend implementation
-- ⏳ Backend event indexer
+- ✅ Frontend implementation
+- ✅ Backend event indexer
 
 ### Phase 2: Trading
-- [ ] Order submission UI
+- ✅ Order submission UI
 - [ ] Callback server for large encrypted data
-- [ ] Order matching engine
+- ✅ Order matching engine
 - [ ] Settlement execution
 - [ ] Order history / portfolio view
 
 ### Phase 3: Advanced Features
 - [ ] Limit orders + order types
 - [ ] Price charts (aggregated, no order-level data)
-- [ ] Mobile app
 - [ ] Notifications (email/SMS for fills)
 
 ### Phase 4: Scale
 - [ ] Multiple trading pairs
-- [ ] Cross-chain deposits (Wormhole)
 - [ ] Liquidity mining
 - [ ] Governance token
 
