@@ -101,16 +101,14 @@ function withdraw(
 
     /// @inheritdoc IEntrypoint
     function swap(
+        address _pool,
         address _srcToken,
         address _dstToken,
         address payable _recipient,
         uint256 _amountIn,
         uint256 _minAmountOut,
         uint24 _fee,
-        uint256 _stateRoot,
-        uint256 _nullifier,
-        uint256 _newCommitment,
-        uint256[24] calldata _proof
+        IVault.ZKProof calldata _zkProof
     ) external vaultExists(_srcToken) {
         IVault srcVault = vaults[_srcToken];
 
@@ -133,6 +131,7 @@ function withdraw(
 
         // Generate swap parameter struct
         IVault.SwapParam memory param = IVault.SwapParam({
+            pool: _pool,
             srcToken: _srcToken,
             dstToken: _dstToken,
             recipient: _recipient,
@@ -142,7 +141,7 @@ function withdraw(
         });
 
         // Execute swap via source vault
-        srcVault.swap(param, swapRouter, _stateRoot, _nullifier, _newCommitment, _proof);
+        srcVault.swap(param, swapRouter, _zkProof);
     }
 
     /// @inheritdoc IEntrypoint

@@ -3,9 +3,32 @@ pragma solidity 0.8.28;
 pragma abicoder v2;
 
 import {Vault} from '../abstracts/Vault.sol';
-import {ISwapRouter} from "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+
+// Interface for the new SimpleSwapRouter
+interface ISimpleSwapRouter {
+    struct ExactInputSingleParams {
+        address tokenIn;
+        address tokenOut;
+        uint24 fee;
+        address recipient;
+        uint256 deadline;
+        uint256 amountIn;
+        uint256 amountOutMinimum;
+        uint160 sqrtPriceLimitX96;
+    }
+
+    function exactInputSingleWithETH(
+        address pool,
+        address weth,
+        ExactInputSingleParams calldata params
+    ) external payable returns (uint256 amountOut);
+}
+
 
 contract NativeVault is Vault {
+
+    // Sepolia WETH address
+    address public constant WETH = 0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14;
 
     constructor(address _asset, address _verifier) Vault(_asset, _verifier) {}
 
@@ -19,12 +42,12 @@ contract NativeVault is Vault {
     }
 
     function _swap(address _router, SwapParam memory _param) internal override {
-        // Load Uniswap V3 router
-        ISwapRouter router = ISwapRouter(_router);
+        // Load SimpleSwapRouter
+        ISimpleSwapRouter router = ISimpleSwapRouter(_router);
 
-        // Build ExactInputSingleParams struct
-        ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
-            tokenIn: _param.srcToken,
+        // Build ExactInputSingleParams struct for the router
+        ISimpleSwapRouter.ExactInputSingleParams memory params = ISimpleSwapRouter.ExactInputSingleParams({
+            tokenIn: _param.srcToken, // This will be WETH address from Entrypoint
             tokenOut: _param.dstToken,
             fee: _param.fee,
             recipient: _param.recipient,
@@ -34,7 +57,11 @@ contract NativeVault is Vault {
             sqrtPriceLimitX96: 0
         });
 
-        // Execute a swap call to the router
-        router.exactInputSingle{value: _param.amountIn}(params);
+        // Execute swap call to the custom router, sending ETH to be wrapped.
+        router.exactInputSingleWithETH{value: _param.amountIn}(
+            _param.pool,
+            WETH,
+            params
+        );
     }
 }

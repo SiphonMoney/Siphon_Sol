@@ -88,22 +88,17 @@ interface IEntrypoint {
      * @param _amountIn The input amount to be withdrawn and swapped
      * @param _minAmountOut The minimum acceptable return amount to protect against slippage or MEV
      * @param _fee The pool's fee tier in hundredths of a bip (1e-6)
-     * @param _stateRoot The merkle tree root the proof was generated with
-     * @param _nullifier The nullifier hash
-     * @param _newCommitment The new commitment hash
-     * @param _proof The Zero-Knowledge Proof of ownership
+     * @param _zkProof A struct containing the ZK proof and its public inputs
      */
     function swap(
+        address _pool,
         address _srcToken,
         address _dstToken,
         address payable _recipient,
         uint256 _amountIn,
         uint256 _minAmountOut,
         uint24 _fee,
-        uint256 _stateRoot,
-        uint256 _nullifier,
-        uint256 _newCommitment,
-        uint256[24] calldata _proof
+        IVault.ZKProof calldata _zkProof
     ) external;
 
     /**

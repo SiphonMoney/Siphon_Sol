@@ -137,36 +137,33 @@ abstract contract Vault is IVault {
     function swap(
         SwapParam memory _param,
         address _swapRouter,
-        uint256 _stateRoot,
-        uint256 _nullifier,
-        uint256 _newCommitment,
-        uint256[24] calldata _proof
+        ZKProof calldata _zkProof
     ) external {
         // Use the provided state root directly (the one the proof was generated with)
-        uint256 root = _stateRoot;
+        uint256 root = _zkProof.stateRoot;
         
         // Prepare public inputs for verification
         uint256[4] memory publicInputs = [
-            _param.amountIn,   // withdrawnValue
-            root,              // stateRoot
-            _newCommitment,    // newCommitment
-            _nullifier         // nullifierHash
+            _param.amountIn,        // withdrawnValue
+            root,                   // stateRoot
+            _zkProof.newCommitment, // newCommitment
+            _zkProof.nullifier      // nullifierHash
         ];
 
         // Verify the ZK proof
-    if(!verifier.verifyProof(_proof, publicInputs)) revert InvalidZKProof();
+    if(!verifier.verifyProof(_zkProof.proof, publicInputs)) revert InvalidZKProof();
 
         // Validate nullifier and mark it as spent
-        if(nullifiers[_nullifier]) revert NullifierAlreadySpent();
-        nullifiers[_nullifier] = true;
+        if(nullifiers[_zkProof.nullifier]) revert NullifierAlreadySpent();
+        nullifiers[_zkProof.nullifier] = true;
 
         // Insert the new commitment into the merkle tree
-        merkleTree.insert(_newCommitment);
+        merkleTree.insert(_zkProof.newCommitment);
 
         // Execute swap
         _swap(_swapRouter, _param);
 
-        emit Swapped(_param.recipient, _param, _nullifier, _newCommitment);
+        emit Swapped(_param.recipient, _param, _zkProof.nullifier, _zkProof.newCommitment);
     }
 
     /*--------------------------------------------------------------------------------------------

@@ -3,6 +3,8 @@ pragma solidity 0.8.28;
 
 interface IVault {
     struct SwapParam {
+        /// @notice The address of the Uniswap V3 pool to use for the swap
+        address pool;
         /// @notice The source token to send (ERC20 or native)
         address srcToken;
         /// @notice The destination token to receive after the swap (ERC20 or native)
@@ -122,7 +124,20 @@ interface IVault {
      * @param _newCommitment The new commitment hash
      * @param _proof The Zero-Knowledge Proof of ownership
      */
-    function swap(SwapParam memory _param, address _swapRouter, uint256 _stateRoot, uint256 _nullifier, uint256 _newCommitment, uint256[24] calldata _proof) external;
+    struct ZKProof {
+        uint256 stateRoot;
+        uint256 nullifier;
+        uint256 newCommitment;
+        uint256[24] proof;
+    }
+
+    /**
+     * @notice Approve and send funds from vault to swap executor
+     * @param _param The swap parameters
+     * @param _swapRouter The swap router address
+     * @param _zkProof The ZK proof and its public inputs
+     */
+    function swap(SwapParam memory _param, address _swapRouter, ZKProof calldata _zkProof) external;
 
     /**
      * @notice Verifies the given ZK proof

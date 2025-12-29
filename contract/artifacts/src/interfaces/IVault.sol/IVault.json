@@ -82,6 +82,11 @@
           "components": [
             {
               "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
               "name": "srcToken",
               "type": "address"
             },
@@ -206,6 +211,11 @@
           "components": [
             {
               "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
               "name": "srcToken",
               "type": "address"
             },
@@ -245,24 +255,31 @@
           "type": "address"
         },
         {
-          "internalType": "uint256",
-          "name": "_stateRoot",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_nullifier",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_newCommitment",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256[24]",
-          "name": "_proof",
-          "type": "uint256[24]"
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "stateRoot",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nullifier",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "newCommitment",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[24]",
+              "name": "proof",
+              "type": "uint256[24]"
+            }
+          ],
+          "internalType": "struct IVault.ZKProof",
+          "name": "_zkProof",
+          "type": "tuple"
         }
       ],
       "name": "swap",
