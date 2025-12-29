@@ -12,13 +12,16 @@ const TOKEN_ADDRESSES = [NATIVE_ASSET, USDC];
 // Sepolia Uniswap V3 SwapRouter
 const UNISWAP_V3_ROUTER = "0xE592427A0AEce92De3Edee1F18E0157C05861564";
 
+// Fee wallet address for withdrawing accumulated fees
+const FEE_WALLET = "0xb11B32f5fBE55E1d0e8c4d28FeEE9D812796D9A9";
+
 const DeploymentModuleFreshV3 = buildModule("DeploymentModuleFreshV3", (m) => {
   const poseidonT3 = m.library("poseidon-solidity/PoseidonT3.sol:PoseidonT3");
 
-  // Entrypoint(owner, swapRouter)
+  // Entrypoint(owner, swapRouter, feeWallet)
   const entrypoint = m.contract(
     "Entrypoint",
-    [ZERO_ADDRESS, UNISWAP_V3_ROUTER],
+    [ZERO_ADDRESS, UNISWAP_V3_ROUTER, FEE_WALLET],
     {
       libraries: {
         PoseidonT3: poseidonT3,

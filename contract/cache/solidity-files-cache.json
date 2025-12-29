@@ -1,9 +1,534 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/Entrypoint.sol": {
-      "lastModificationDate": 1763195816889,
-      "contentHash": "122c9e0eafc549bdac9aef1d5710847a",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\abstracts\\Vault.sol": {
+      "lastModificationDate": 1766876712612,
+      "contentHash": "a2be38165dc0b1cb51261d9a7f2f6cda",
+      "sourceName": "src/abstracts/Vault.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IVault.sol",
+        "../states/MerkleTree.sol",
+        "poseidon-solidity/PoseidonT3.sol",
+        "../verifiers/WithdrawalVerifier.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "Vault"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\states\\MerkleTree.sol": {
+      "lastModificationDate": 1766517412513,
+      "contentHash": "1167d0aec4fc58b1e1b7e0fbb04f2aff",
+      "sourceName": "src/states/MerkleTree.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../interfaces/IMerkleTree.sol",
+        "poseidon-solidity/PoseidonT3.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "MerkleTree"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\IVault.sol": {
+      "lastModificationDate": 1766876712612,
+      "contentHash": "9d756adaa2b63d3e59947d1c3ec114df",
+      "sourceName": "src/interfaces/IVault.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "IVault"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\verifiers\\WithdrawalVerifier.sol": {
+      "lastModificationDate": 1766517412516,
+      "contentHash": "08a9567b3f1f2eda4126cb3d1a0d72e0",
+      "sourceName": "src/verifiers/WithdrawalVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "PlonkVerifier"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\poseidon-solidity\\PoseidonT3.sol": {
+      "lastModificationDate": 1766965948644,
+      "contentHash": "88a3db6023abdf06f44823c05f81f69e",
+      "sourceName": "poseidon-solidity/PoseidonT3.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0"
+      ],
+      "artifacts": [
+        "PoseidonT3"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\IMerkleTree.sol": {
+      "lastModificationDate": 1766517412507,
+      "contentHash": "ea5d25d2d0e30bfebec7ee6c24f6d35d",
+      "sourceName": "src/interfaces/IMerkleTree.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "IMerkleTree"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\states\\NativeVault.sol": {
+      "lastModificationDate": 1766517412514,
+      "contentHash": "5cb65cf4d511f5b8225802d4f5b49647",
+      "sourceName": "src/states/NativeVault.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/Vault.sol",
+        "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "NativeVault"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@uniswap\\v3-periphery\\contracts\\interfaces\\ISwapRouter.sol": {
+      "lastModificationDate": 1766965952279,
+      "contentHash": "ffd42687b3db01d30c24213d961fcf9f",
+      "sourceName": "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol"
+      ],
+      "versionPragmas": [
+        ">=0.7.5"
+      ],
+      "artifacts": [
+        "ISwapRouter"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@uniswap\\v3-core\\contracts\\interfaces\\callback\\IUniswapV3SwapCallback.sol": {
+      "lastModificationDate": 1766965950908,
+      "contentHash": "a8ba2d37b0107911ae0e3b0e123cbd83",
+      "sourceName": "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.5.0"
+      ],
+      "artifacts": [
+        "IUniswapV3SwapCallback"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\states\\AlternativeVault.sol": {
+      "lastModificationDate": 1766517412512,
+      "contentHash": "ce12f322d40b6285bcbbe68e86f00c16",
+      "sourceName": "src/states/AlternativeVault.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../abstracts/Vault.sol",
+        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+        "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol"
+      ],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "AlternativeVault"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\utils\\SafeERC20.sol": {
+      "lastModificationDate": 1766965953760,
+      "contentHash": "1b5d667d3740d866eca0352758e59827",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../IERC20.sol",
+        "../extensions/IERC20Permit.sol",
+        "../../../utils/Address.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "SafeERC20"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@openzeppelin\\contracts\\utils\\Address.sol": {
+      "lastModificationDate": 1766965952779,
+      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.1"
+      ],
+      "artifacts": [
+        "Address"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\IERC20.sol": {
+      "lastModificationDate": 1766965953557,
+      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\node_modules\\@openzeppelin\\contracts\\token\\ERC20\\extensions\\IERC20Permit.sol": {
+      "lastModificationDate": 1766965953567,
+      "contentHash": "525fcdad8d171312933f47baf01d1ed8",
+      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IERC20Permit"
+      ]
+    },
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\Entrypoint.sol": {
+      "lastModificationDate": 1766965694117,
+      "contentHash": "82308fea137e2d357cbc9fac9016e829",
       "sourceName": "src/Entrypoint.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -44,9 +569,9 @@
         "Entrypoint"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/IEntrypoint.sol": {
-      "lastModificationDate": 1763129330025,
-      "contentHash": "3746dd508d79354a21554f6540f30b21",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\IEntrypoint.sol": {
+      "lastModificationDate": 1766876712612,
+      "contentHash": "1430dd4a83a9031f96fcaa5d9c848b52",
       "sourceName": "src/interfaces/IEntrypoint.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -82,645 +607,9 @@
         "IEntrypoint"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/states/AlternativeVault.sol": {
-      "lastModificationDate": 1763195816889,
-      "contentHash": "5b11ad3fecf39c766ef8eb839d488ba5",
-      "sourceName": "src/states/AlternativeVault.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/Vault.sol",
-        "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
-        "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol"
-      ],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "AlternativeVault"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/verifiers/WithdrawalVerifier.sol": {
-      "lastModificationDate": 1763124212957,
-      "contentHash": "d265fc9b84746ec7e0dfde6835d055e8",
-      "sourceName": "src/verifiers/WithdrawalVerifier.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.7.0 <0.9.0"
-      ],
-      "artifacts": [
-        "PlonkVerifier"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/IVault.sol": {
-      "lastModificationDate": 1763129272210,
-      "contentHash": "0a3eae5a18fbef06008ea61c60fc28d9",
-      "sourceName": "src/interfaces/IVault.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "IVault"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/states/NativeVault.sol": {
-      "lastModificationDate": 1763195816889,
-      "contentHash": "97a38398905fe4719b24b6702c01e64b",
-      "sourceName": "src/states/NativeVault.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../abstracts/Vault.sol",
-        "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol"
-      ],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "NativeVault"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol": {
-      "lastModificationDate": 1761391781980,
-      "contentHash": "1b5d667d3740d866eca0352758e59827",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../IERC20.sol",
-        "../extensions/IERC20Permit.sol",
-        "../../../utils/Address.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "SafeERC20"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/abstracts/Vault.sol": {
-      "lastModificationDate": 1763195816888,
-      "contentHash": "fd359330ad666304b7cc9ae8762fcc6a",
-      "sourceName": "src/abstracts/Vault.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IVault.sol",
-        "../states/MerkleTree.sol",
-        "poseidon-solidity/PoseidonT3.sol",
-        "../verifiers/WithdrawalVerifier.sol"
-      ],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "Vault"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol": {
-      "lastModificationDate": 1761391770112,
-      "contentHash": "ffd42687b3db01d30c24213d961fcf9f",
-      "sourceName": "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol"
-      ],
-      "versionPragmas": [
-        ">=0.7.5"
-      ],
-      "artifacts": [
-        "ISwapRouter"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/states/MerkleTree.sol": {
-      "lastModificationDate": 1763220293269,
-      "contentHash": "a69501cd740c7c2e33aaf6ed6f4e8a90",
-      "sourceName": "src/states/MerkleTree.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "../interfaces/IMerkleTree.sol",
-        "poseidon-solidity/PoseidonT3.sol"
-      ],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "MerkleTree"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/poseidon-solidity/PoseidonT3.sol": {
-      "lastModificationDate": 1761391763141,
-      "contentHash": "88a3db6023abdf06f44823c05f81f69e",
-      "sourceName": "poseidon-solidity/PoseidonT3.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.7.0"
-      ],
-      "artifacts": [
-        "PoseidonT3"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/IMerkleTree.sol": {
-      "lastModificationDate": 1762964171396,
-      "contentHash": "5c5653bf528137b64fe09efd9bd79161",
-      "sourceName": "src/interfaces/IMerkleTree.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "0.8.28"
-      ],
-      "artifacts": [
-        "IMerkleTree"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@zk-kit/lean-imt.sol/LeanIMT.sol": {
-      "lastModificationDate": 1761391764725,
-      "contentHash": "46a0d9cb5f119f4063e795887a4c36a2",
-      "sourceName": "@zk-kit/lean-imt.sol/LeanIMT.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "./InternalLeanIMT.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.4"
-      ],
-      "artifacts": [
-        "LeanIMT"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@zk-kit/lean-imt.sol/InternalLeanIMT.sol": {
-      "lastModificationDate": 1761391764725,
-      "contentHash": "d2559532b41cd344b6f5fc28720d194d",
-      "sourceName": "@zk-kit/lean-imt.sol/InternalLeanIMT.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [
-        "poseidon-solidity/PoseidonT3.sol",
-        "./Constants.sol"
-      ],
-      "versionPragmas": [
-        "^0.8.4"
-      ],
-      "artifacts": [
-        "InternalLeanIMT"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@zk-kit/lean-imt.sol/Constants.sol": {
-      "lastModificationDate": 1761391764727,
-      "contentHash": "f8b2aa1a7d19380722cb6045ffc42c0f",
-      "sourceName": "@zk-kit/lean-imt.sol/Constants.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.4"
-      ],
-      "artifacts": []
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol": {
-      "lastModificationDate": 1761391770048,
-      "contentHash": "a8ba2d37b0107911ae0e3b0e123cbd83",
-      "sourceName": "@uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">=0.5.0"
-      ],
-      "artifacts": [
-        "IUniswapV3SwapCallback"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1761391782101,
-      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.1"
-      ],
-      "artifacts": [
-        "Address"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
-      "lastModificationDate": 1761391781979,
-      "contentHash": "df36f7051335cd1e748b1b6463b7fdd3",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/IERC20.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC20"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/node_modules/@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol": {
-      "lastModificationDate": 1761391781981,
-      "contentHash": "525fcdad8d171312933f47baf01d1ed8",
-      "sourceName": "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 1
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IERC20Permit"
-      ]
-    },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/uniswap/IAllowanceTransfer.sol": {
-      "lastModificationDate": 1761391793310,
-      "contentHash": "06d31910ea7b998cbe0dd20d8cde38e1",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\uniswap\\IAllowanceTransfer.sol": {
+      "lastModificationDate": 1766517412509,
+      "contentHash": "b1b917b0e83e67910e700ec687930acc",
       "sourceName": "src/interfaces/uniswap/IAllowanceTransfer.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -756,9 +645,9 @@
         "IAllowanceTransfer"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/uniswap/IEIP712.sol": {
-      "lastModificationDate": 1761391793311,
-      "contentHash": "a9e0ea72c45d0e8d7f58ad676bd7345f",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\uniswap\\IEIP712.sol": {
+      "lastModificationDate": 1766517412509,
+      "contentHash": "b48ca8cc25fdcac2808fbdeaf493c20b",
       "sourceName": "src/interfaces/uniswap/IEIP712.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -792,9 +681,9 @@
         "IEIP712"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/uniswap/IPermit2.sol": {
-      "lastModificationDate": 1761391793311,
-      "contentHash": "1186e406ac0acbb224428a4b1152dbf9",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\uniswap\\IPermit2.sol": {
+      "lastModificationDate": 1766517412510,
+      "contentHash": "66f316391082fd1ce654fa7836769d5a",
       "sourceName": "src/interfaces/uniswap/IPermit2.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -831,9 +720,9 @@
         "IPermit2"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/uniswap/ISignatureTransfer.sol": {
-      "lastModificationDate": 1761391793310,
-      "contentHash": "5b4840f0f27510533ad19650d56757dd",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\uniswap\\ISignatureTransfer.sol": {
+      "lastModificationDate": 1766517412511,
+      "contentHash": "d3eb070a4ee1f933418d5c29d7b66b04",
       "sourceName": "src/interfaces/uniswap/ISignatureTransfer.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -869,9 +758,9 @@
         "ISignatureTransfer"
       ]
     },
-    "/Users/adityamane/working/siphon_eth/packages/contract/src/interfaces/uniswap/IUniversalRouter.sol": {
-      "lastModificationDate": 1761391793309,
-      "contentHash": "18d9702c38fb62d54a5807232c5fb144",
+    "C:\\Users\\kenwa\\OneDrive\\Desktop\\siphon_total\\Siphon_Money\\contract\\src\\interfaces\\uniswap\\IUniversalRouter.sol": {
+      "lastModificationDate": 1766517412511,
+      "contentHash": "0a829021c79444850fde11fb082ada26",
       "sourceName": "src/interfaces/uniswap/IUniversalRouter.sol",
       "solcConfig": {
         "version": "0.8.28",

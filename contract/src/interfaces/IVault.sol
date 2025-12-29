@@ -73,6 +73,14 @@ interface IVault {
      */
     event Swapped(address indexed recipient, SwapParam _param, uint256 _spentNullifier, uint256 _newCommitment);
 
+    /**
+     * @notice Emitted when commitment is updated (e.g., for fee payment)
+     * @param amount The amount processed
+     * @param nullifier The spent nullifier
+     * @param newCommitment The new commitment hash
+     */
+    event CommitmentUpdated(uint256 amount, uint256 nullifier, uint256 newCommitment);
+
     /*--------------------------------------------------------------------------------------------
                                                 VIEWS
     --------------------------------------------------------------------------------------------*/
@@ -123,6 +131,16 @@ interface IVault {
      * @param _proof The Zero-Knowledge Proof of ownership
      */
     function swap(SwapParam memory _param, address _swapRouter, uint256 _stateRoot, uint256 _nullifier, uint256 _newCommitment, uint256[24] calldata _proof) external;
+
+    /**
+     * @notice Update commitment with fee deduction (for strategy execution payment)
+     * @param _amount The amount being processed (for proof verification)
+     * @param _stateRoot The merkle tree root the proof was generated with
+     * @param _nullifier The nullifier hash
+     * @param _newCommitment The new commitment hash (with fee deducted)
+     * @param _proof The Zero-Knowledge Proof of ownership
+     */
+    function updateCommitment(uint256 _amount, uint256 _stateRoot, uint256 _nullifier, uint256 _newCommitment, uint256[24] calldata _proof) external;
 
     /**
      * @notice Verifies the given ZK proof
