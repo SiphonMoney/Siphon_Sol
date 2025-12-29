@@ -1,5 +1,5 @@
 {
-  "DeploymentModuleFreshV3#PoseidonT3": "0xceFb635DAF7998913d7dA14B7f57d5C83ead4055",
-  "DeploymentModuleFreshV3#SimpleSwapRouter": "0xe47B873CeC796E1F89860c4f3306193950ca193E",
-  "DeploymentModuleFreshV3#Entrypoint": "0x1565E62bfdAc6b2c6b81cc1C6c76367747D5FAB3"
+  "DeploymentModuleFreshV3#PoseidonT3": "0x45a9d4e2146b9D12B44b14af9569356846c96bd8",
+  "DeploymentModuleFreshV3#SimpleSwapRouter": "0x08562366FD684efBD68F84d52096d761f9870780",
+  "DeploymentModuleFreshV3#Entrypoint": "0x8Be4A7A074468F571271192A0A0824cf6F08a1f6"
 }

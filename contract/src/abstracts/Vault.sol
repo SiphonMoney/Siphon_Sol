@@ -166,6 +166,45 @@ abstract contract Vault is IVault {
         emit Swapped(_param.recipient, _param, _zkProof.nullifier, _zkProof.newCommitment);
     }
 
+    /**
+     * @notice Update commitment with fee deduction (for strategy execution payment)
+     * @param _amount The amount being processed (for proof verification)
+     * @param _stateRoot The merkle tree root the proof was generated with
+     * @param _nullifier The nullifier hash
+     * @param _newCommitment The new commitment hash (with fee deducted)
+     * @param _proof The Zero-Knowledge Proof of ownership
+     */
+    function updateCommitment(
+        uint256 _amount,
+        uint256 _stateRoot,
+        uint256 _nullifier,
+        uint256 _newCommitment,
+        uint256[24] calldata _proof
+    ) external {
+        // Use the provided state root directly
+        uint256 root = _stateRoot;
+        
+        // Prepare public inputs for verification
+        uint256[4] memory publicInputs = [
+            _amount,           // amount (for verification)
+            root,              // stateRoot
+            _newCommitment,    // newCommitment
+            _nullifier         // nullifierHash
+        ];
+
+        // Verify the ZK proof
+        if(!verifier.verifyProof(_proof, publicInputs)) revert InvalidZKProof();
+
+        // Validate nullifier and mark it as spent
+        if(nullifiers[_nullifier]) revert NullifierAlreadySpent();
+        nullifiers[_nullifier] = true;
+
+        // Insert the new commitment into the merkle tree
+        merkleTree.insert(_newCommitment);
+
+        emit CommitmentUpdated(_amount, _nullifier, _newCommitment);
+    }
+
     /*--------------------------------------------------------------------------------------------
                                             OVERRIDES
     --------------------------------------------------------------------------------------------*/

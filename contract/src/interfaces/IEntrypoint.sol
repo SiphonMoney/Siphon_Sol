@@ -40,6 +40,11 @@ interface IEntrypoint {
      */
     error ZeroAddress();
 
+    /**
+     * @notice Thrown when fee is already paid for a nullifier
+     */
+    error FeeAlreadyPaid(uint256 nullifier, uint256 paidAmount);
+
 
     /**
      * @notice Initialize the vaults and configuration
@@ -125,4 +130,24 @@ interface IEntrypoint {
      * @return The vault contract address
      */
     function getVault(address asset) external view returns (address);
+
+    /**
+     * @notice Pay execution fee and update commitment (for strategy execution)
+     * @param _asset The asset type (native or ERC20)
+     * @param _executionPrice The execution price to deduct as fee
+     * @param _amount The amount being processed (for proof verification)
+     * @param _stateRoot The merkle tree root the proof was generated with
+     * @param _nullifier The nullifier hash
+     * @param _newCommitment The new commitment hash (with fee deducted)
+     * @param _proof The Zero-Knowledge Proof of ownership
+     */
+    function payExecutionFee(
+        address _asset,
+        uint256 _executionPrice,
+        uint256 _amount,
+        uint256 _stateRoot,
+        uint256 _nullifier,
+        uint256 _newCommitment,
+        uint256[24] calldata _proof
+    ) external;
 }

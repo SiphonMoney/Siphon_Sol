@@ -4,6 +4,22 @@
   "sourceName": "src/interfaces/IEntrypoint.sol",
   "abi": [
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "nullifier",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "paidAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "FeeAlreadyPaid",
+      "type": "error"
+    },
+    {
       "inputs": [],
       "name": "InvalidDepositAmount",
       "type": "error"
@@ -95,6 +111,49 @@
         }
       ],
       "name": "initializeVaults",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_executionPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_stateRoot",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_nullifier",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_newCommitment",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256[24]",
+          "name": "_proof",
+          "type": "uint256[24]"
+        }
+      ],
+      "name": "payExecutionFee",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
