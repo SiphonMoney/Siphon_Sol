@@ -1,0 +1,8 @@
+[package]
+name = "siphon_withdrawal"
+type = "bin"
+authors = ["Siphon Team"]
+compiler_version = ">=1.0.0-beta.13"
+expression_width = 4
+
+[dependencies]
