@@ -1354,6 +1354,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "siphon-zk-pool"
+version = "0.1.0"
+dependencies = [
+ "anchor-lang",
+ "anchor-spl",
+ "constant_time_eq 0.3.1",
+]
+
+[[package]]
 name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"

@@ -7,6 +7,7 @@ skip-lint = false
 
 [programs.localnet]
 siphon = "8msvrbpBsdVKnF2FNwUAMERfCrG8Yqng9HcfJBRxGPgX"
+siphon_zk_pool = "3CVsp1zayXhNsT8Ktrh85rTewvBJxWy8VcUtQAKdnQMb"
 
 [registry]
 url = "https://api.apr.dev"
