@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /relayer/node_modules
+/strategies-executor/trade-executor/node_modules
 /.pnp
 .pnp.*
 .yarn/*
