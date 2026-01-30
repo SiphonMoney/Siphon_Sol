@@ -13,12 +13,13 @@ import {
 } from '@solana/web3.js';
 import bs58 from 'bs58';
 import dotenv from 'dotenv';
+import { NEXT_PUBLIC_SOLANA_RPC_URL } from '../src/lib/config.js';
 
 dotenv.config({ path: '../.env.local' });
 
 const PROGRAM_ID = new PublicKey('3CVsp1zayXhNsT8Ktrh85rTewvBJxWy8VcUtQAKdnQMb');
 const FEE_RECIPIENT = new PublicKey('DTqtRSGtGf414yvMPypCv2o1P8trwb9SJXibxLgAWYhw');
-const RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://devnet.helius-rpc.com/?api-key=d2622292-55af-47d3-96e7-6af057eafa3d';
+const RPC_URL = NEXT_PUBLIC_SOLANA_RPC_URL || 'https://devnet.helius-rpc.com/?api-key=d2622292-55af-47d3-96e7-6af057eafa3d';
 
 // Load the executor keypair
 const execKey = process.env.EXECUTOR_PRIVATE_KEY;

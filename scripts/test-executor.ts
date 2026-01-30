@@ -1,9 +1,10 @@
 import { Connection, Keypair, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import bs58 from 'bs58';
+import { NEXT_PUBLIC_SOLANA_RPC_URL } from '../src/lib/config';
 
 async function testExecutor() {
   const executorKey = process.env.EXECUTOR_PRIVATE_KEY;
-  const rpcUrl = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
+  const rpcUrl = NEXT_PUBLIC_SOLANA_RPC_URL || 'https://api.devnet.solana.com';
 
   if (!executorKey) {
     console.error('❌ EXECUTOR_PRIVATE_KEY not set in environment');

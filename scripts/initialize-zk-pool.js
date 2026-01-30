@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '..', '.env.local') });
 const crypto = require('crypto');
+const { NEXT_PUBLIC_HELIUS_API_KEY } = require('../src/lib/config');
 
 // Program ID for the siphon-zk-pool program
 const ZK_POOL_PROGRAM_ID = new PublicKey('3CVsp1zayXhNsT8Ktrh85rTewvBJxWy8VcUtQAKdnQMb');
@@ -69,7 +70,7 @@ async function main() {
 
   console.log('Admin Pubkey:', adminKeypair.publicKey.toBase58());
 
-  const heliusKey = process.env.NEXT_PUBLIC_HELIUS_API_KEY;
+  const heliusKey = NEXT_PUBLIC_HELIUS_API_KEY;
   const rpcUrl = heliusKey
     ? `https://devnet.helius-rpc.com/?api-key=${heliusKey}`
     : 'https://api.devnet.solana.com';

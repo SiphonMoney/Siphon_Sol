@@ -5,6 +5,7 @@ import BN from 'bn.js';
 import bs58 from 'bs58';
 import dotenv from 'dotenv';
 import {WasmFactory} from '@lightprotocol/hasher.rs';
+import { NEXT_PUBLIC_PROGRAM_ID, NEXT_PUBLIC_SOLANA_RPC_URL } from '../src/lib/config.js';
 
 dotenv.config({path:'../.env.local'});
 
@@ -23,8 +24,8 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
 // --- Configuration ---
-const PROGRAM_ID = new PublicKey(process.env.NEXT_PUBLIC_PROGRAM_ID || 'ATZj4jZ4FFzkvAcvk27DW9GRkgSbFnHo49fKKPQXU7VS');
-const RPC_URL = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || 'https://devnet.helius-rpc.com/?api-key=d2622292-55af-47d3-96e7-6af057eafa3d';
+const PROGRAM_ID = new PublicKey(NEXT_PUBLIC_PROGRAM_ID || 'ATZj4jZ4FFzkvAcvk27DW9GRkgSbFnHo49fKKPQXU7VS');
+const RPC_URL = NEXT_PUBLIC_SOLANA_RPC_URL || 'https://devnet.helius-rpc.com/?api-key=d2622292-55af-47d3-96e7-6af057eafa3d';
 const FEE_RECIPIENT = new PublicKey(process.env.FEE_RECIPIENT || 'DTqtRSGtGf414yvMPypCv2o1P8trwb9SJXibxLgAWYhw');
 const MERKLE_TREE_HEIGHT = 26;
 const PORT = process.env.RELAYER_PORT || 4000;
