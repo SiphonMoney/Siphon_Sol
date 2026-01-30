@@ -3,7 +3,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
-import { PROGRAM_ID, SOLANA_RPC, getUserLedgerAddress } from '@/lib/constants';
+import { L1_RPC_URL, MATCHING_ENGINE_PROGRAM_ID } from '@/config/env';
+import { userLedgerPda } from '@/solana/pdas';
 
 export interface UserLedgerState {
   exists: boolean;
@@ -27,9 +28,9 @@ export function useUserLedger(walletAddress: string | null) {
     setState(prev => ({ ...prev, loading: true, error: null }));
 
     try {
-      const connection = new Connection(SOLANA_RPC, 'confirmed');
+      const connection = new Connection(L1_RPC_URL, 'confirmed');
       const userPubkey = new PublicKey(walletAddress);
-      const ledgerPDA = getUserLedgerAddress(userPubkey, PROGRAM_ID);
+      const ledgerPDA = userLedgerPda(MATCHING_ENGINE_PROGRAM_ID, userPubkey);
 
       const accountInfo = await connection.getAccountInfo(ledgerPDA);
       const exists = accountInfo !== null;

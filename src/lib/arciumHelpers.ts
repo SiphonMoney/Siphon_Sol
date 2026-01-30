@@ -23,6 +23,8 @@ try {
 
 // ===== MPC Account Derivations =====
 
+const FALLBACK_ARCIUM_PROGRAM_ID = new PublicKey('Arcj82pX7HxYKLR92qvgZUAd7vGS1k4hQvAFcPATFdEQ');
+
 export function getMXEAccAddress(programId: PublicKey): PublicKey {
   if (arciumClient?.getMXEAccAddress && typeof arciumClient.getMXEAccAddress === 'function') {
     return (arciumClient.getMXEAccAddress as (programId: PublicKey) => PublicKey)(programId);
@@ -35,23 +37,24 @@ export function getMXEAccAddress(programId: PublicKey): PublicKey {
   return mxePDA;
 }
 
-export function getMempoolAccAddress(programId: PublicKey): PublicKey {
+export function getMempoolAccAddress(clusterOrProgramId: number | PublicKey): PublicKey {
   if (arciumClient?.getMempoolAccAddress && typeof arciumClient.getMempoolAccAddress === 'function') {
-    return (arciumClient.getMempoolAccAddress as (programId: PublicKey) => PublicKey)(programId);
+    return (arciumClient.getMempoolAccAddress as (clusterOffset: number) => PublicKey)(
+      typeof clusterOrProgramId === 'number' ? clusterOrProgramId : 0
+    );
   }
-  // Placeholder implementation
-  const [mempoolPDA] = PublicKey.findProgramAddressSync(
-    [Buffer.from('mempool')],
-    programId
-  );
+  const programId = typeof clusterOrProgramId === 'number' ? FALLBACK_ARCIUM_PROGRAM_ID : clusterOrProgramId;
+  const [mempoolPDA] = PublicKey.findProgramAddressSync([Buffer.from('mempool')], programId);
   return mempoolPDA;
 }
 
-export function getExecutingPoolAccAddress(programId: PublicKey): PublicKey {
+export function getExecutingPoolAccAddress(clusterOrProgramId: number | PublicKey): PublicKey {
   if (arciumClient?.getExecutingPoolAccAddress && typeof arciumClient.getExecutingPoolAccAddress === 'function') {
-    return (arciumClient.getExecutingPoolAccAddress as (programId: PublicKey) => PublicKey)(programId);
+    return (arciumClient.getExecutingPoolAccAddress as (clusterOffset: number) => PublicKey)(
+      typeof clusterOrProgramId === 'number' ? clusterOrProgramId : 0
+    );
   }
-  // Placeholder implementation
+  const programId = typeof clusterOrProgramId === 'number' ? FALLBACK_ARCIUM_PROGRAM_ID : clusterOrProgramId;
   const [executingPoolPDA] = PublicKey.findProgramAddressSync(
     [Buffer.from('executing_pool')],
     programId
@@ -59,11 +62,14 @@ export function getExecutingPoolAccAddress(programId: PublicKey): PublicKey {
   return executingPoolPDA;
 }
 
-export function getComputationAccAddress(programId: PublicKey, offset: BN): PublicKey {
+export function getComputationAccAddress(clusterOrProgramId: number | PublicKey, offset: BN): PublicKey {
   if (arciumClient?.getComputationAccAddress && typeof arciumClient.getComputationAccAddress === 'function') {
-    return (arciumClient.getComputationAccAddress as (programId: PublicKey, offset: BN) => PublicKey)(programId, offset);
+    return (arciumClient.getComputationAccAddress as (clusterOffset: number, offset: BN) => PublicKey)(
+      typeof clusterOrProgramId === 'number' ? clusterOrProgramId : 0,
+      offset
+    );
   }
-  // Placeholder implementation
+  const programId = typeof clusterOrProgramId === 'number' ? FALLBACK_ARCIUM_PROGRAM_ID : clusterOrProgramId;
   const [computationPDA] = PublicKey.findProgramAddressSync(
     [Buffer.from('computation'), offset.toArrayLike(Buffer, 'le', 8)],
     programId
@@ -89,8 +95,8 @@ export function getClusterAccAddress(clusterOffset: number): PublicKey {
   if (arciumClient?.getClusterAccAddress && typeof arciumClient.getClusterAccAddress === 'function') {
     return (arciumClient.getClusterAccAddress as (clusterOffset: number) => PublicKey)(clusterOffset);
   }
-  // Placeholder implementation - this will need the actual Arcium program ID
-  const ARCIUM_PROGRAM_ID = new PublicKey('Arc1umProgramId11111111111111111111111111111');
+  // Placeholder implementation - uses known devnet program id
+  const ARCIUM_PROGRAM_ID = FALLBACK_ARCIUM_PROGRAM_ID;
   const offsetBuffer = Buffer.alloc(4);
   offsetBuffer.writeUInt32LE(clusterOffset);
   const [clusterPDA] = PublicKey.findProgramAddressSync(
@@ -105,7 +111,7 @@ export function getArciumProgramId(): PublicKey {
     return (arciumClient.getArciumProgramId as () => PublicKey)();
   }
   // Placeholder - replace with actual Arcium program ID
-  return new PublicKey('Arc1umProgramId11111111111111111111111111111');
+  return FALLBACK_ARCIUM_PROGRAM_ID;
 }
 
 // ===== Computation Definition Offsets =====

@@ -2,11 +2,15 @@
 "use client";
 
 import { useState } from 'react';
-import { BACKEND_URL } from '@/lib/constants';
+import { Connection } from '@solana/web3.js';
+import { BACKEND_API_URL, L1_RPC_URL } from '@/config/env';
+import { MatchingEngineClient } from '@/solana/matchingEngineClient';
+import { getBrowserWalletAdapter, toU64Amount } from '@/lib/solanaWallet';
 import './darkpool.css';
 
 interface WithdrawModalProps {
   walletAddress: string;
+  signMessage: (message: Uint8Array) => Promise<Uint8Array>;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -15,8 +19,10 @@ type TokenType = 'base' | 'quote';
 type WithdrawStatus = 'idle' | 'verifying' | 'waiting_backend' | 'executing' | 'complete' | 'failed';
 
 export default function WithdrawModal({ 
-  onClose, 
-  onSuccess 
+  walletAddress,
+  signMessage,
+  onClose,
+  onSuccess
 }: WithdrawModalProps) {
   const [amount, setAmount] = useState('');
   const [tokenType, setTokenType] = useState<TokenType>('base');
@@ -36,21 +42,28 @@ export default function WithdrawModal({
     setError(null);
 
     try {
-      // Step 1: MPC Verification
-      // TODO: Implement actual withdraw_from_ledger_verify instruction
-      
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const mockTxSig = 'mock_tx_' + Date.now();
-      setTxSignature(mockTxSig);
+      const walletAdapter = getBrowserWalletAdapter(signMessage);
+      if (walletAdapter.publicKey.toBase58() !== walletAddress) {
+        throw new Error('Wallet address mismatch. Please reconnect your wallet.');
+      }
+      if (!walletAdapter.signTransaction) {
+        throw new Error('Wallet must support signTransaction');
+      }
 
-      // Wait for MPC computation
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      const connection = new Connection(L1_RPC_URL, 'confirmed');
+      const client = await MatchingEngineClient.create(connection, walletAdapter);
+      const amountU64 = toU64Amount(amount, tokenType === 'base' ? 9 : 6);
+
+      const txSig = await client.withdrawVerify({ token: tokenType, amountU64 });
+      setTxSignature(txSig);
+
+      // Wait briefly for MPC computation + backend handling
+      await new Promise(resolve => setTimeout(resolve, 2000));
       
       setStatus('waiting_backend');
       
       // Step 2: Poll backend for execution status
-      await pollWithdrawalStatus(mockTxSig);
+      await pollWithdrawalStatus(txSig);
       
     } catch (err) {
       console.error('Withdrawal failed:', err);
@@ -67,7 +80,7 @@ export default function WithdrawModal({
       attempts++;
       
       try {
-        const response = await fetch(`${BACKEND_URL}/api/withdrawals/${txSig}`);
+        const response = await fetch(`${BACKEND_API_URL}/api/withdrawals/${txSig}`);
         
         if (!response.ok) {
           // Mock successful completion after 3 attempts

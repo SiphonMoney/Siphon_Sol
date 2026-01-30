@@ -2,10 +2,15 @@
 "use client";
 
 import { useState } from 'react';
+import { Connection } from '@solana/web3.js';
+import { L1_RPC_URL } from '@/config/env';
+import { MatchingEngineClient } from '@/solana/matchingEngineClient';
+import { getBrowserWalletAdapter, toU64Amount } from '@/lib/solanaWallet';
 import './darkpool.css';
 
 interface DepositModalProps {
   walletAddress: string;
+  signMessage: (message: Uint8Array) => Promise<Uint8Array>;
   onClose: () => void;
   onSuccess: () => void;
 }
@@ -13,9 +18,10 @@ interface DepositModalProps {
 type TokenType = 'base' | 'quote';
 
 export default function DepositModal({ 
-  walletAddress, 
-  onClose, 
-  onSuccess 
+  walletAddress,
+  signMessage,
+  onClose,
+  onSuccess
 }: DepositModalProps) {
   const [amount, setAmount] = useState('');
   const [tokenType, setTokenType] = useState<TokenType>('base');
@@ -36,23 +42,24 @@ export default function DepositModal({
     setProgress('Preparing deposit...');
 
     try {
-      // TODO: Implement actual deposit logic
-      // 1. Get user's x25519 public key
-      // 2. Generate computation offset
-      // 3. Call deposit_to_ledger instruction
-      // 4. Wait for MPC computation
-      
-      setProgress('Getting encryption keys...');
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const walletAdapter = getBrowserWalletAdapter(signMessage);
+      if (walletAdapter.publicKey.toBase58() !== walletAddress) {
+        throw new Error('Wallet address mismatch. Please reconnect your wallet.');
+      }
+      if (!walletAdapter.signTransaction) {
+        throw new Error('Wallet must support signTransaction');
+      }
 
-      setProgress('Creating transaction...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      setProgress('Preparing transaction...');
+      const connection = new Connection(L1_RPC_URL, 'confirmed');
+      const client = await MatchingEngineClient.create(connection, walletAdapter);
+      const amountU64 = toU64Amount(amount, tokenType === 'base' ? 9 : 6);
 
       setProgress('Submitting to pool...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await client.deposit({ token: tokenType, amountU64 });
 
-      setProgress('Awaiting MPC computation...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      setProgress('Finalizing MPC computation...');
+      await new Promise(resolve => setTimeout(resolve, 1200));
 
       console.log('Deposit completed:', { amount, tokenType, walletAddress });
       

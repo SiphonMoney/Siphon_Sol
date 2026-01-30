@@ -11,6 +11,7 @@ import OrderForm from './OrderForm';
 import OrderList from './OrderList';
 import ConnectButton from '../swap_face/extensions/ConnectButton';
 import { WalletInfo } from '@/lib/walletManager';
+import { getBrowserWalletAdapter } from '@/lib/solanaWallet';
 import './darkpool.css';
 
 interface DarkPoolInterfaceProps {
@@ -41,11 +42,12 @@ export default function DarkPoolInterface({
   
   console.log('🎭 DEMO MODE:', DEMO_MODE ? 'ENABLED' : 'DISABLED');
 
-  // Mock signMessage function - replace with actual wallet adapter
   const signMessage = useCallback(async (message: Uint8Array): Promise<Uint8Array> => {
-    // TODO: Implement actual message signing with wallet adapter
-    console.log('Signing message:', message);
-    return new Uint8Array(64).fill(0); // Mock signature
+    const adapter = getBrowserWalletAdapter();
+    if (!adapter.signMessage) {
+      throw new Error('Wallet does not support message signing');
+    }
+    return adapter.signMessage(message);
   }, []);
 
   const handleLedgerInitialized = () => {
@@ -105,6 +107,7 @@ export default function DarkPoolInterface({
       <div className="darkpool-interface">
         <InitializeLedger
           walletAddress={walletAddress}
+          signMessage={signMessage}
           onComplete={handleLedgerInitialized}
         />
       </div>
@@ -287,6 +290,7 @@ export default function DarkPoolInterface({
       {activeModal === 'deposit' && (
         <DepositModal
           walletAddress={walletAddress}
+          signMessage={signMessage}
           onClose={() => setActiveModal(null)}
           onSuccess={handleDepositSuccess}
         />
@@ -295,6 +299,7 @@ export default function DarkPoolInterface({
       {activeModal === 'withdraw' && (
         <WithdrawModal
           walletAddress={walletAddress}
+          signMessage={signMessage}
           onClose={() => setActiveModal(null)}
           onSuccess={handleWithdrawSuccess}
         />

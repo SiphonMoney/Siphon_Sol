@@ -2,8 +2,14 @@
 "use client";
 
 import { useState } from 'react';
-import { BACKEND_URL } from '@/lib/constants';
-import { getOrCreateUserKeys, encryptOrderData } from '@/lib/encryption';
+import { AnchorProvider } from '@coral-xyz/anchor';
+import { Connection, Transaction } from '@solana/web3.js';
+import { L1_RPC_URL, MARKET_PUBKEY, PER_BASE_URL, PER_MATCHING_PROGRAM_ID, PER_RELAYER_PUBKEY } from '@/config/env';
+import { MatchingEngineClient } from '@/solana/matchingEngineClient';
+import { addUserOrderPrivate, initUserOrderPlaceholder, waitForPermissionActive } from '@/per/perMatchingClient';
+import { getAuthToken, makePerProvider } from '@/per/perClient';
+import { perUserOrderPda } from '@/solana/pdas';
+import { getBrowserWalletAdapter, toU64Amount } from '@/lib/solanaWallet';
 import './darkpool.css';
 
 interface OrderFormProps {
@@ -13,6 +19,15 @@ interface OrderFormProps {
 }
 
 type OrderType = 'buy' | 'sell';
+
+function hexToBytes(hex: string): Uint8Array {
+  const normalized = hex.startsWith('0x') ? hex.slice(2) : hex;
+  const bytes = new Uint8Array(normalized.length / 2);
+  for (let i = 0; i < bytes.length; i += 1) {
+    bytes[i] = Number.parseInt(normalized.substr(i * 2, 2), 16);
+  }
+  return bytes;
+}
 
 export default function OrderForm({ 
   walletAddress, 
@@ -40,51 +55,76 @@ export default function OrderForm({
     setError(null);
 
     try {
-      // Get user's x25519 keys
-      const { privateKey, publicKey: encPubkey } = await getOrCreateUserKeys(
-        walletAddress,
-        signMessage
-      );
-      
-      // TODO: Get MXE public key from chain
-      const mockMxePubkey = new Uint8Array(32);
-      
-      // Encrypt order data
-      const { encrypted, nonce } = await encryptOrderData(
-        {
-          orderType: orderType === 'buy' ? 0 : 1,
-          amount: parseFloat(amount) * 1e9,
-          price: parseFloat(price) * 1e6,
-        },
-        privateKey,
-        mockMxePubkey
-      );
-      
-      // Send to backend
-      const response = await fetch(`${BACKEND_URL}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          user: walletAddress,
-          userEncPubkey: Array.from(encPubkey),
-          encryptedOrder: encrypted,
-          nonce: nonce.toString(),
-          orderType: orderType,
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to submit order');
+      if (!MARKET_PUBKEY || !PER_RELAYER_PUBKEY || !PER_BASE_URL) {
+        throw new Error('Missing PER configuration (market, relayer, or PER_BASE_URL)');
       }
 
-      const data = await response.json();
-      console.log('Order submitted:', data.orderId);
-      
+      const walletAdapter = getBrowserWalletAdapter(signMessage);
+      if (!walletAdapter.signTransaction || !walletAdapter.signMessage) {
+        throw new Error('Wallet must support signTransaction and signMessage');
+      }
+      if (walletAdapter.publicKey.toBase58() !== walletAddress) {
+        console.warn('Wallet address mismatch between UI and adapter');
+      }
+
+      const l1Connection = new Connection(L1_RPC_URL, 'confirmed');
+      const l1Provider = new AnchorProvider(l1Connection, walletAdapter as AnchorProvider['wallet'], {
+        commitment: 'confirmed',
+      });
+
+      const matchingClient = await MatchingEngineClient.create(l1Connection, walletAdapter);
+      const amountU64 = toU64Amount(amount, 9);
+      const priceU64 = toU64Amount(price, 6);
+
+      const ticket = await matchingClient.submitOrderTicket({
+        side: orderType,
+        amountU64,
+        priceU64,
+      });
+
+      const initTx = await initUserOrderPlaceholder({
+        provider: l1Provider,
+        market: MARKET_PUBKEY,
+        ticketIdU64: ticket.orderIdU64,
+        relayer: PER_RELAYER_PUBKEY,
+        autoPermission: true,
+      });
+
+      initTx.feePayer = walletAdapter.publicKey;
+      const { blockhash } = await l1Connection.getLatestBlockhash('confirmed');
+      initTx.recentBlockhash = blockhash;
+      const signedInit = await walletAdapter.signTransaction(initTx);
+      const initSig = await l1Connection.sendRawTransaction(signedInit.serialize(), {
+        skipPreflight: true,
+      });
+      await l1Connection.confirmTransaction(initSig, 'confirmed');
+
+      const userOrderPda = perUserOrderPda(
+        PER_MATCHING_PROGRAM_ID,
+        MARKET_PUBKEY,
+        walletAdapter.publicKey,
+        ticket.orderIdU64
+      );
+      await waitForPermissionActive(userOrderPda);
+
+      const token = await getAuthToken(PER_BASE_URL, walletAdapter.publicKey, walletAdapter.signMessage);
+      const perProvider = makePerProvider(token, walletAdapter as AnchorProvider['wallet']);
+
+      await addUserOrderPrivate({
+        provider: perProvider,
+        market: MARKET_PUBKEY,
+        ticketIdU64: ticket.orderIdU64,
+        side: orderType,
+        amountU64,
+        priceU64,
+        salt32: hexToBytes(ticket.salt32Hex),
+      });
+
       // Clear form
       setPrice('');
       setAmount('');
       
-      onSuccess?.(data.orderId);
+      onSuccess?.(ticket.orderIdU64.toString());
     } catch (err) {
       console.error('Order submission failed:', err);
       setError(err instanceof Error ? err.message : 'Order submission failed');

@@ -100,6 +100,7 @@ export default function DarkPoolPage() {
     checkWalletConnection();
   }, []);
 
+
   // Show loading while checking wallet connection
   const walletAddress = (walletConnected && connectedWallet) ? connectedWallet.address : null;
 
@@ -281,18 +282,22 @@ export default function DarkPoolPage() {
               </div>
             </div>
             ) : (
-              <div style={{
-                width: '100%',
-                height: '100%',
-                paddingTop: '40px'
-              }}>
-                <DarkPoolInterface
-                  walletAddress={walletAddress}
-                  walletName={connectedWallet?.name}
-                  onDisconnect={handleDisconnect}
-                  onWalletConnected={handleWalletConnected}
-                />
-              </div>
+              <>
+                {isLaunched && (
+                  <div style={{
+                    width: '100%',
+                    height: '100%',
+                    paddingTop: '40px'
+                  }}>
+                    <DarkPoolInterface
+                      walletAddress={walletAddress}
+                      walletName={connectedWallet?.name}
+                      onDisconnect={handleDisconnect}
+                      onWalletConnected={handleWalletConnected}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
           

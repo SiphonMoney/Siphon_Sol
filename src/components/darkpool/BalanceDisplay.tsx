@@ -3,7 +3,6 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useBalance } from '@/hooks/useBalance';
-import { getOrCreateUserKeys } from '@/lib/encryption';
 import { USDC_DECIMALS } from '@/lib/constants';
 import './darkpool.css';
 
@@ -18,16 +17,12 @@ export default function BalanceDisplay({
   signMessage,
   onRefresh 
 }: BalanceDisplayProps) {
-  const { balance, loading, error, refreshBalance } = useBalance(walletAddress);
+  const { balance, loading, error, refreshBalance } = useBalance(walletAddress, signMessage);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
 
   const handleRefresh = useCallback(async () => {
     try {
-      // Get user's encryption keys
-      const { privateKey } = await getOrCreateUserKeys(walletAddress, signMessage);
-      
-      // Refresh balance
-      await refreshBalance(privateKey);
+      await refreshBalance();
       setLastUpdate(new Date());
       
       onRefresh?.();
