@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/noir-zk/withdraw/route.ts": {
+      "maxDuration": 60
+    },
+    "src/app/api/noir-zk/execute-private-withdrawal/route.ts": {
+      "maxDuration": 60
+    }
+  }
+}
