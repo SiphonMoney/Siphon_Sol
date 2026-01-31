@@ -9,10 +9,10 @@ import type { WalletAdapter } from '@/lib/solanaWallet';
 import { getBrowserWalletAdapter } from '@/lib/solanaWallet';
 
 export interface EncryptedBalanceView {
-  base_total: bigint;
-  base_available: bigint;
-  quote_total: bigint;
-  quote_available: bigint;
+  base_total: number;
+  base_available: number;
+  quote_total: number;
+  quote_available: number;
 }
 
 export interface BalanceState {
@@ -44,10 +44,10 @@ export function useBalance(walletAddress: string | null, signMessage: (message: 
 
       setState({
         balance: {
-          base_total: balances[0],
-          base_available: balances[1],
-          quote_total: balances[2],
-          quote_available: balances[3],
+          base_total: Number(balances[0]),
+          base_available: Number(balances[1]),
+          quote_total: Number(balances[2]),
+          quote_available: Number(balances[3]),
         },
         loading: false,
         error: null,

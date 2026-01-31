@@ -136,7 +136,8 @@ export class MatchingEngineClient {
     const clusterAccount = getClusterAccAddress(ARCIUM_CLUSTER_OFFSET);
     console.log("ARCIUM_CLUSTER_OFFSET==========================", ARCIUM_CLUSTER_OFFSET);
     console.log("programId==========================", this.programId.toBase58());
-    console.log("getMXEAccAddress==========================", getMXEAccAddress(this.programId).toBase58());
+    console.log("getCompDefAccAddress==========================", getCompDefAccAddress(this.programId, Buffer.from(getCompDefAccOffset('init_user_ledger')).readUInt32LE()).toBase58());
+    
 
     const methods = this.program.methods as unknown as MatchingMethods;
     const tx = await methods
@@ -359,13 +360,15 @@ export class MatchingEngineClient {
       this.wallet.publicKey.toBase58(),
       this.wallet.signMessage
     );
-
+    console.log("programid", this.programId.toBase58());
     const mxePubkey = await getMxePublicKeyWithRetry(this.provider, this.programId);
     const cipher = cipherForUser(userPriv, mxePubkey);
 
     const account = this.program.account as Record<string, { fetch: (pda: PublicKey) => Promise<unknown> }>;
     const ledger = (await account.userPrivateLedger.fetch(this.deriveUserLedger(this.wallet.publicKey))) as Record<string, unknown>;
+    console.log("ledger==========================", ledger);
     const encryptedBalances = (ledger.encryptedBalances ?? ledger.encrypted_balances) as Uint8Array[] | number[][];
+    console.log("encryptedBalances==========================", encryptedBalances);
     const balanceNonce = (ledger.balanceNonce ?? ledger.balance_nonce ?? ledger.nonce) as BN;
 
     if (!encryptedBalances || !balanceNonce) {
@@ -373,7 +376,11 @@ export class MatchingEngineClient {
     }
 
     const nonceBytes = toU128LE(balanceNonce);
+    // const nonceBytes = balanceNonce.toArray("le", 16)
+    console.log("nonceBytes==========================", nonceBytes);
+    console.log("balancenonce==========================", balanceNonce);
     const balances = cipher.decrypt(encryptedBalances, nonceBytes);
+    console.log("balances==========================", balances[0].toString());
     return balances;
   }
 }
