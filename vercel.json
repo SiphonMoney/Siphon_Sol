@@ -5,6 +5,15 @@
     },
     "src/app/api/noir-zk/execute-private-withdrawal/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/noir-zk/withdraw-async/route.ts": {
+      "maxDuration": 10
+    },
+    "src/app/api/noir-zk/job-status/[jobId]/route.ts": {
+      "maxDuration": 10
+    },
+    "src/app/api/noir-zk/process-job/route.ts": {
+      "maxDuration": 60
     }
   }
 }
