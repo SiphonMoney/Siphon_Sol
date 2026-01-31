@@ -2,17 +2,6 @@ import { AnchorProvider, BN, Program, Idl } from '@coral-xyz/anchor';
 import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID, getAssociatedTokenAddress } from '@solana/spl-token';
 import { Buffer } from 'buffer';
-import {
-  getComputationAccAddress,
-  getCompDefAccAddress,
-  getCompDefAccOffset,
-  getExecutingPoolAccAddress,
-  getClusterAccAddress,
-  getArciumProgramId,
-  getMempoolAccAddress,
-  getMXEAccAddress,
-  awaitComputationFinalization,
-} from '@/lib/arciumHelpers';
 import { MATCHING_ENGINE_PROGRAM_ID, ARCIUM_CLUSTER_OFFSET, MATCHING_ENGINE_IDL_PATH } from '@/config/env';
 import { loadIdl } from '@/solana/idl';
 import {
@@ -25,6 +14,7 @@ import {
 } from '@/solana/pdas';
 import { cipherForUser, computeOrderCommitment, encryptOrder, getMxePublicKeyWithRetry, u64ToBn } from '@/crypto/arcium';
 import { getOrCreateUserX25519 } from '@/crypto/x25519Store';
+import { getClusterAccAddress, getComputationAccAddress, getCompDefAccAddress, getCompDefAccOffset, getExecutingPoolAccAddress, getMempoolAccAddress, getMXEAccAddress, getArciumProgramId, awaitComputationFinalization } from '@arcium-hq/client';
 
 type TokenType = 'base' | 'quote';
 type Side = 'buy' | 'sell';
@@ -144,6 +134,9 @@ export class MatchingEngineClient {
     const userLedgerNonce = randomBytes(16);
     const computationOffset = u64ToBn(randomU64());
     const clusterAccount = getClusterAccAddress(ARCIUM_CLUSTER_OFFSET);
+    console.log("ARCIUM_CLUSTER_OFFSET==========================", ARCIUM_CLUSTER_OFFSET);
+    console.log("programId==========================", this.programId.toBase58());
+    console.log("getMXEAccAddress==========================", getMXEAccAddress(this.programId).toBase58());
 
     const methods = this.program.methods as unknown as MatchingMethods;
     const tx = await methods
@@ -164,6 +157,7 @@ export class MatchingEngineClient {
         userLedger: ledger,
       })
       .rpc({ commitment: 'confirmed' });
+    console.log("tx==========================", tx);
 
     await awaitComputationFinalization(this.provider, computationOffset, this.programId, 'confirmed');
     return tx;

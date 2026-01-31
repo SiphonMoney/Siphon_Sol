@@ -3,14 +3,14 @@ import { PublicKey } from '@solana/web3.js';
 import { BN } from '@coral-xyz/anchor';
 
 // Environment variables
-export const SOLANA_RPC = process.env.NEXT_PUBLIC_SOLANA_RPC || 'https://api.devnet.solana.com';
-export const PROGRAM_ID = new PublicKey(process.env.NEXT_PUBLIC_PROGRAM_ID || '8ndLKjoaUcjDTrL6Bsw3xkyafTV87ZC5XPUgf6AFJP6N');
+export const SOLANA_RPC = process.env.NEXT_PUBLIC_SOLANA_RPC || 'https://devnet.helius-rpc.com/\?api-key\=daa43648-936f-40e1-9303-2ea12ba55a2a';
+export const PROGRAM_ID = new PublicKey(process.env.NEXT_PUBLIC_PROGRAM_ID || '9YDjxNapUNiEMhgP8FfDJxBNEZvhvqven4LENF4gFG6y');
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
 export const CLUSTER = process.env.NEXT_PUBLIC_CLUSTER || 'devnet';
 
 // Token mints
 export const SOL_MINT = 'So11111111111111111111111111111111111111112';
-export const USDC_MINT_DEVNET = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+export const USDC_MINT_DEVNET = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
 
 // Constants
 export const LAMPORTS_PER_SOL = 1_000_000_000;
