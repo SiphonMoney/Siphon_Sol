@@ -4,8 +4,6 @@
 
 // Retrieved 2026-01-31, License - CC BY-SA 4.0
 
-
-
 module.exports = {
   webpack5: true,
   webpack: (config) => {
@@ -14,4 +12,3 @@ module.exports = {
     return config;
   },
 };
-
