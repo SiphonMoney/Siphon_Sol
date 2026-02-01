@@ -11,7 +11,7 @@ import OrderForm from './OrderForm';
 import OrderList from './OrderList';
 import ConnectButton from '../swap_face/extensions/ConnectButton';
 import { WalletInfo } from '@/lib/walletManager';
-import { getBrowserWalletAdapter } from '@/lib/solanaWallet';
+import { getBrowserWalletAdapter, toU64Amount } from '@/lib/solanaWallet';
 import './darkpool.css';
 
 interface DarkPoolInterfaceProps {
@@ -23,6 +23,13 @@ interface DarkPoolInterfaceProps {
 
 type View = 'overview' | 'trade' | 'history';
 type ModalType = 'deposit' | 'withdraw' | null;
+type TokenType = 'base' | 'quote';
+type DemoBalance = {
+  base_available: bigint;
+  base_total: bigint;
+  quote_available: bigint;
+  quote_total: bigint;
+};
 
 export default function DarkPoolInterface({ 
   walletAddress,
@@ -34,6 +41,12 @@ export default function DarkPoolInterface({
   const [view, setView] = useState<View>('overview');
   const [activeModal, setActiveModal] = useState<ModalType>(null);
   const [balanceKey, setBalanceKey] = useState(0);
+  const [demoBalance, setDemoBalance] = useState<DemoBalance>({
+    base_available: 0n,
+    base_total: 0n,
+    quote_available: 0n,
+    quote_total: 0n,
+  });
   
   // 🎭 DEMO MODE: Bypass initialization for testing/demo
   // Set to true to skip ledger check and go straight to main interface
@@ -54,12 +67,40 @@ export default function DarkPoolInterface({
     checkLedgerExists();
   };
 
-  const handleDepositSuccess = () => {
+  const applyBalanceDelta = (tokenType: TokenType, amountU64: bigint, isDeposit: boolean) => {
+    setDemoBalance(prev => {
+      const delta = isDeposit ? amountU64 : -amountU64;
+      const apply = (current: bigint) => {
+        const next = current + delta;
+        return next > 0n ? next : 0n;
+      };
+
+      if (tokenType === 'base') {
+        return {
+          ...prev,
+          base_available: apply(prev.base_available),
+          base_total: apply(prev.base_total),
+        };
+      }
+
+      return {
+        ...prev,
+        quote_available: apply(prev.quote_available),
+        quote_total: apply(prev.quote_total),
+      };
+    });
+  };
+
+  const handleDepositSuccess = (amount: string, tokenType: TokenType, _signature?: string) => {
+    const amountU64 = toU64Amount(amount, tokenType === 'base' ? 9 : 6);
+    applyBalanceDelta(tokenType, amountU64, true);
     setActiveModal(null);
     setBalanceKey(prev => prev + 1); // Force balance refresh
   };
 
-  const handleWithdrawSuccess = () => {
+  const handleWithdrawSuccess = (amount: string, tokenType: TokenType) => {
+    const amountU64 = toU64Amount(amount, tokenType === 'base' ? 9 : 6);
+    applyBalanceDelta(tokenType, amountU64, false);
     setActiveModal(null);
     setBalanceKey(prev => prev + 1); // Force balance refresh
   };
@@ -191,6 +232,7 @@ export default function DarkPoolInterface({
                 key={balanceKey}
                 walletAddress={walletAddress}
                 signMessage={signMessage}
+                overrideBalance={demoBalance}
               />
             </div>
 

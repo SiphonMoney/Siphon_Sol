@@ -12,7 +12,7 @@ interface WithdrawModalProps {
   walletAddress: string;
   signMessage: (message: Uint8Array) => Promise<Uint8Array>;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (amount: string, tokenType: TokenType) => void;
 }
 
 type TokenType = 'base' | 'quote';
@@ -87,7 +87,7 @@ export default function WithdrawModal({
           if (attempts >= 3) {
             setStatus('complete');
             setTimeout(() => {
-              onSuccess();
+              onSuccess(amount, tokenType);
             }, 1000);
             return;
           }
@@ -101,7 +101,7 @@ export default function WithdrawModal({
         } else if (data.status === 'complete') {
           setStatus('complete');
           setTimeout(() => {
-            onSuccess();
+            onSuccess(amount, tokenType);
           }, 1000);
           return;
         } else if (data.status === 'failed') {
@@ -116,7 +116,7 @@ export default function WithdrawModal({
         if (attempts >= 3) {
           setStatus('complete');
           setTimeout(() => {
-            onSuccess();
+            onSuccess(amount, tokenType);
           }, 1000);
           return;
         }

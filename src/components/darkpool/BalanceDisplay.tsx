@@ -10,26 +10,36 @@ interface BalanceDisplayProps {
   walletAddress: string;
   signMessage: (message: Uint8Array) => Promise<Uint8Array>;
   onRefresh?: () => void;
+  overrideBalance?: {
+    base_available: bigint;
+    base_total: bigint;
+    quote_available: bigint;
+    quote_total: bigint;
+  };
 }
 
 export default function BalanceDisplay({ 
   walletAddress, 
   signMessage,
-  onRefresh 
+  onRefresh,
+  overrideBalance
 }: BalanceDisplayProps) {
   const { balance, loading, error, refreshBalance } = useBalance(walletAddress, signMessage);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const hasOverride = Boolean(overrideBalance);
 
   const handleRefresh = useCallback(async () => {
     try {
-      await refreshBalance();
+      if (!hasOverride) {
+        await refreshBalance();
+      }
       setLastUpdate(new Date());
       
       onRefresh?.();
     } catch (err) {
       console.error('Failed to refresh balance:', err);
     }
-  }, [walletAddress, signMessage, refreshBalance, onRefresh]);
+  }, [hasOverride, walletAddress, signMessage, refreshBalance, onRefresh]);
 
   useEffect(() => {
     handleRefresh();
@@ -39,7 +49,7 @@ export default function BalanceDisplay({
     return (Number(amount) / Math.pow(10, decimals)).toFixed(4);
   };
 
-  if (loading && !balance) {
+  if (!hasOverride && loading && !balance) {
     return (
       <div className="balance-card">
         <div className="loading-state">
@@ -50,7 +60,7 @@ export default function BalanceDisplay({
     );
   }
 
-  if (error) {
+  if (!hasOverride && error) {
     return (
       <div className="balance-card">
         <div className="error-state">
@@ -60,7 +70,24 @@ export default function BalanceDisplay({
     );
   }
 
-  if (!balance) {
+  if (!hasOverride && !balance) {
+    return (
+      <div className="balance-card">
+        <div className="empty-state">
+          No balance data available
+        </div>
+      </div>
+    );
+  }
+
+  const displayBalance = overrideBalance ?? (balance ? {
+    base_available: BigInt(balance.base_available),
+    base_total: BigInt(balance.base_total),
+    quote_available: BigInt(balance.quote_available),
+    quote_total: BigInt(balance.quote_total),
+  } : null);
+
+  if (!displayBalance) {
     return (
       <div className="balance-card">
         <div className="empty-state">
@@ -92,11 +119,11 @@ export default function BalanceDisplay({
           <div className="balance-amounts">
             <div className="balance-primary">
               <span className="label">Available</span>
-              <span className="amount">{formatBalance(balance.base_available, 9)} SOL</span>
+              <span className="amount">{formatBalance(displayBalance.base_available, 9)} SOL</span>
             </div>
             <div className="balance-secondary">
               <span className="label">Total (incl. locked)</span>
-              <span className="amount">{formatBalance(balance.base_total, 9)} SOL</span>
+              <span className="amount">{formatBalance(displayBalance.base_total, 9)} SOL</span>
             </div>
           </div>
         </div>
@@ -108,11 +135,11 @@ export default function BalanceDisplay({
           <div className="balance-amounts">
             <div className="balance-primary">
               <span className="label">Available</span>
-              <span className="amount">{formatBalance(balance.quote_available, USDC_DECIMALS)} USDC</span>
+              <span className="amount">{formatBalance(displayBalance.quote_available, USDC_DECIMALS)} USDC</span>
             </div>
             <div className="balance-secondary">
               <span className="label">Total (incl. locked)</span>
-              <span className="amount">{formatBalance(balance.quote_total, USDC_DECIMALS)} USDC</span>
+              <span className="amount">{formatBalance(displayBalance.quote_total, USDC_DECIMALS)} USDC</span>
             </div>
           </div>
         </div>

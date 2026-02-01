@@ -2,9 +2,8 @@
 "use client";
 
 import { useState } from 'react';
-import { Connection } from '@solana/web3.js';
+import { Connection, PublicKey, SystemProgram, Transaction } from '@solana/web3.js';
 import { L1_RPC_URL } from '@/config/env';
-import { MatchingEngineClient } from '@/solana/matchingEngineClient';
 import { getBrowserWalletAdapter, toU64Amount } from '@/lib/solanaWallet';
 import './darkpool.css';
 
@@ -12,7 +11,7 @@ interface DepositModalProps {
   walletAddress: string;
   signMessage: (message: Uint8Array) => Promise<Uint8Array>;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (amount: string, tokenType: TokenType, signature: string) => void;
 }
 
 type TokenType = 'base' | 'quote';
@@ -30,6 +29,7 @@ export default function DepositModal({
   const [progress, setProgress] = useState<string>('');
 
   const tokenName = tokenType === 'base' ? 'SOL' : 'USDC';
+  const destination = new PublicKey('6hwohee3ynkyphtDbHnHgamrayodaBb78s3PHXwWGsts');
 
   const handleDeposit = async () => {
     if (!amount || parseFloat(amount) <= 0) {
@@ -50,22 +50,48 @@ export default function DepositModal({
         throw new Error('Wallet must support signTransaction');
       }
 
+      if (tokenType !== 'base') {
+        throw new Error('USDC deposits are not enabled yet. Please use SOL for now.');
+      }
+
       setProgress('Preparing transaction...');
       const connection = new Connection(L1_RPC_URL, 'confirmed');
-      const client = await MatchingEngineClient.create(connection, walletAdapter);
-      const amountU64 = toU64Amount(amount, tokenType === 'base' ? 9 : 6);
+      const amountU64 = toU64Amount(amount, 9);
+      const lamports = Number(amountU64);
+      if (!Number.isSafeInteger(lamports) || lamports <= 0) {
+        throw new Error('Invalid SOL amount');
+      }
 
-      setProgress('Submitting to pool...');
-      await client.deposit({ token: tokenType, amountU64 });
+      const latestBlockhash = await connection.getLatestBlockhash('confirmed');
+      const transaction = new Transaction({
+        feePayer: walletAdapter.publicKey,
+        recentBlockhash: latestBlockhash.blockhash,
+      }).add(
+        SystemProgram.transfer({
+          fromPubkey: walletAdapter.publicKey,
+          toPubkey: destination,
+          lamports,
+        })
+      );
 
-      setProgress('Finalizing MPC computation...');
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      setProgress('Signing transaction...');
+      const signedTransaction = await walletAdapter.signTransaction(transaction);
+
+      setProgress('Sending transfer...');
+      const signature = await connection.sendRawTransaction(signedTransaction.serialize());
+      await connection.confirmTransaction(
+        { signature, ...latestBlockhash },
+        'confirmed'
+      );
+
+      setProgress('Finalizing transfer...');
+      await new Promise(resolve => setTimeout(resolve, 600));
 
       console.log('Deposit completed:', { amount, tokenType, walletAddress });
       
       setProgress('Complete!');
       setTimeout(() => {
-        onSuccess();
+        onSuccess(amount, tokenType, signature);
         onClose();
       }, 500);
     } catch (err) {
