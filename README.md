@@ -1,10 +1,10 @@
 <div align="left">
 
-# Siphon Protocol - Solana
+# Siphon Protocol
 
-> **Privacy-Preserving DeFi Execution Layer for Solana**
+> **Privacy-Preserving Execution Layer for Solana**
 >
-> Execute DeFi strategies privately using Zero-Knowledge proofs. Deposit, withdraw, and trade without revealing your intent.
+> Execute DeFi strategies and trades without revealing your intent.
 
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -20,12 +20,33 @@
 
 ## Overview
 
-Siphon Protocol is a **privacy-preserving DeFi vault** built for the [Solana Privacy Hack Competition](https://solana.com/privacyhack). It enables users to:
+Siphon Protocol is a **privacy-preserving execution layer for DeFi**. It enables strategies and transactions to run with **confidential intent by default**, reducing information leakage to MEV, copycats, and on-chain surveillance.
 
-- **Private Deposits/Withdrawals** - ZK-based privacy pool using Poseidon Merkle trees
-- **Anonymous Transfers** - Break the on-chain link between sender and recipient
-- **Compliant Privacy** - Range Protocol screening on deposits AND withdrawals
-- **MEV Protection** - Hidden trading intent prevents front-running
+### Problem
+
+- **DeFi is exposed**: Public ledgers reveal execution traces (positions, PnL patterns, routes). This makes execution vulnerable to MEV and strategy replication.
+- **DeFi is complex**: Moving from simple swaps to multi-hop and cross-protocol strategies is already hard; adding privacy primitives (ZK, FHE, TEEs) makes it inaccessible for most builders.
+- **DeFi is fragmented**: Liquidity and protocols are scattered across chains; privacy tooling is fragmented across dark pools, MPC, and siloed ecosystems with limited composability.
+
+### Market reality (high-level)
+
+- ~$280M lost monthly to front-running on DEXs (industry estimates).
+- ~$12B in privacy assets still lacks deep DeFi integration.
+- <1% of developers can work directly with advanced privacy primitives end-to-end.
+
+### Value proposition
+
+- **Encrypted execution by default**: Keep intent and strategy parameters private during execution.
+- **Composable building blocks**: Translate common DeFi interactions into modular execution blocks that can be assembled into reusable blueprints.
+- **Verifiable integrity**: Use ZK-style proofs and cryptographic commitments for privacy-preserving authorization and anti-double-spend flows.
+- **Optional compliance**: Pre-screening on deposits/withdrawals when required.
+- **Composable distribution**: Blueprints can be reused, forked, and monetized (e.g., via the Payment Wall) without exposing underlying intent or alpha.
+
+Siphon is designed as an execution layer that external systems can consume (e.g., via APIs/SDKs).
+
+**Motto:** Discover. Build. Run — any DeFi strategy, confidentially.
+
+**Details:** [Strategies flow diagram](docs/strategies_flow_diagram.md).
 
 ### Partner Integrations
 
@@ -39,7 +60,7 @@ See detailed integration docs in the [docs/](docs/) folder.
 
 ---
 
-## Architecture
+## ZK Architecture
 
 ```
 User Wallet
