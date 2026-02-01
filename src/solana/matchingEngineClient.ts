@@ -185,13 +185,19 @@ export class MatchingEngineClient {
     const ledger = this.deriveUserLedger(this.wallet.publicKey);
     const vault = vaultPda(this.programId, mint);
     const vaultAuthority = vaultAuthorityPda(this.programId);
-    let userTokenAccount: PublicKey;
+    const userTokenAccount = await getAssociatedTokenAddress(mint, this.wallet.publicKey);
     //check if the mint for the token is native sol...if that is the case then the usertokenaccount will be the same as the wallet public key
-    if (mint.toBase58() === 'So11111111111111111111111111111111111111112') {
-      userTokenAccount = this.wallet.publicKey;
-    } else {
-      userTokenAccount = await getAssociatedTokenAddress(mint, this.wallet.publicKey);
-    }
+
+    // log all the accounts here
+    console.log("userTokenAccount==========================", userTokenAccount.toBase58());
+    console.log("mint==========================", mint.toBase58());
+    console.log("this.wallet.publicKey==========================", this.wallet.publicKey.toBase58());
+    console.log("ledger==========================", ledger.toBase58());
+    console.log("vault==========================", vault.toBase58());
+    console.log("vaultAuthority==========================", vaultAuthority.toBase58());
+    console.log("userEncPubkey==========================", userEncPubkey);
+    console.log("params.amountU64==========================", params.amountU64.toString());
+    console.log("isBase==========================", isBase);
 
 
     const methods = this.program.methods as unknown as MatchingMethods;

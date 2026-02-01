@@ -43,7 +43,7 @@ const CACHE_MAX_AGE = 30 * 24 * 60 * 60 * 1000; // 30 days
 export function createSignatureMessage(walletPubkey: PublicKey): string {
   return `Dark Pool DEX - Viewing Key Derivation
 
-Domain: meow
+Domain: siphon.money
 Wallet: ${walletPubkey.toBase58()}
 Purpose: Decrypt your encrypted balance and orders
 
