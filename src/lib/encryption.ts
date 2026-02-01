@@ -9,6 +9,8 @@
  * import { x25519, RescueCipher } from '@arcium-hq/client';
  */
 
+import { x25519 as nobleX25519 } from '@noble/curves/ed25519.js';
+
 // Try to import from @arcium-hq/client
 let arciumClient: Record<string, unknown> | null = null;
 try {
@@ -33,23 +35,17 @@ interface X25519Interface {
 const placeholderX25519: X25519Interface = {
   utils: {
     randomSecretKey: (): Uint8Array => {
-      return crypto.getRandomValues(new Uint8Array(32));
+      console.warn('⚠️  Using noble x25519.randomSecretKey fallback');
+      return nobleX25519.utils.randomSecretKey();
     }
   },
   getPublicKey: (privateKey: Uint8Array): Uint8Array => {
-    console.warn('⚠️  Using placeholder x25519.getPublicKey');
-    // This is NOT real x25519 curve multiplication - placeholder only
-    // Use privateKey to avoid unused variable warning (even though it's a placeholder)
-    void privateKey;
-    return crypto.getRandomValues(new Uint8Array(32));
+    console.warn('⚠️  Using noble x25519.getPublicKey fallback');
+    return nobleX25519.getPublicKey(privateKey);
   },
   getSharedSecret: (privateKey: Uint8Array, publicKey: Uint8Array): Uint8Array => {
-    console.warn('⚠️  Using placeholder x25519.getSharedSecret');
-    // This is NOT real x25519 ECDH - placeholder only
-    // Use parameters to avoid unused variable warnings (even though it's a placeholder)
-    void privateKey;
-    void publicKey;
-    return crypto.getRandomValues(new Uint8Array(32));
+    console.warn('⚠️  Using noble x25519.getSharedSecret fallback');
+    return nobleX25519.getSharedSecret(privateKey, publicKey);
   }
 };
 

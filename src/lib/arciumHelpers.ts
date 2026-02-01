@@ -4,6 +4,7 @@
 import { PublicKey } from '@solana/web3.js';
 import { AnchorProvider } from '@coral-xyz/anchor';
 import { BN } from '@coral-xyz/anchor';
+import { getMXEPublicKey } from '@arcium-hq/client';
 
 /**
  * NOTE: These imports from @arcium-hq/client should work once the package is installed
@@ -139,15 +140,15 @@ export function getCompDefAccOffset(computationType: string): Uint8Array {
 
 // ===== MPC Utilities =====
 
-export async function getMXEPublicKey(provider: AnchorProvider, programId: PublicKey): Promise<Uint8Array> {
-  if (arciumClient?.getMXEPublicKey && typeof arciumClient.getMXEPublicKey === 'function') {
-    return (arciumClient.getMXEPublicKey as (provider: AnchorProvider, programId: PublicKey) => Promise<Uint8Array>)(provider, programId);
-  }
+// export async function getMXEPublicKey(provider: AnchorProvider, programId: PublicKey): Promise<Uint8Array> {
+//   if (arciumClient?.getMXEPublicKey && typeof arciumClient.getMXEPublicKey === 'function') {
+//     return (arciumClient.getMXEPublicKey as (provider: AnchorProvider, programId: PublicKey) => Promise<Uint8Array>)(provider, programId);
+//   }
   
-  // Placeholder implementation
-  console.warn('⚠️  Using placeholder MXE public key');
-  return new Uint8Array(32).fill(1);
-}
+//   // Placeholder implementation
+//   console.warn('⚠️  Using placeholder MXE public key');
+//   return new Uint8Array(32).fill(1);
+// }
 
 export async function getMXEPublicKeyWithRetry(
   provider: AnchorProvider,
@@ -155,23 +156,28 @@ export async function getMXEPublicKeyWithRetry(
   maxRetries: number = 10,
   retryDelayMs: number = 500
 ): Promise<Uint8Array> {
-  if (arciumClient?.getMXEPublicKeyWithRetry && typeof arciumClient.getMXEPublicKeyWithRetry === 'function') {
-    return (arciumClient.getMXEPublicKeyWithRetry as (provider: AnchorProvider, programId: PublicKey, maxRetries: number, retryDelayMs: number) => Promise<Uint8Array>)(provider, programId, maxRetries, retryDelayMs);
-  }
-  
-  // Placeholder with retry logic
-  for (let i = 0; i < maxRetries; i++) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      return await getMXEPublicKey(provider, programId);
+      const mxePublicKey = await getMXEPublicKey(provider, programId);
+      if (mxePublicKey) {
+        return mxePublicKey;
+      }
     } catch (error) {
-      if (i === maxRetries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, retryDelayMs));
+      console.log(`Attempt ${attempt} failed to fetch MXE public key:`, error);
+    }
+
+    if (attempt < maxRetries) {
+      console.log(
+        `Retrying in ${retryDelayMs}ms... (attempt ${attempt}/${maxRetries})`
+      );
+      await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
     }
   }
-  
-  throw new Error('Failed to get MXE public key after retries');
-}
 
+  throw new Error(
+    `Failed to fetch MXE public key after ${maxRetries} attempts`
+  );
+}
 export async function awaitComputationFinalization(
   provider: AnchorProvider,
   computationOffset: BN,

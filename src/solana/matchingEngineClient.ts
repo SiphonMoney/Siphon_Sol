@@ -185,7 +185,14 @@ export class MatchingEngineClient {
     const ledger = this.deriveUserLedger(this.wallet.publicKey);
     const vault = vaultPda(this.programId, mint);
     const vaultAuthority = vaultAuthorityPda(this.programId);
-    const userTokenAccount = await getAssociatedTokenAddress(mint, this.wallet.publicKey);
+    let userTokenAccount: PublicKey;
+    //check if the mint for the token is native sol...if that is the case then the usertokenaccount will be the same as the wallet public key
+    if (mint.toBase58() === 'So11111111111111111111111111111111111111112') {
+      userTokenAccount = this.wallet.publicKey;
+    } else {
+      userTokenAccount = await getAssociatedTokenAddress(mint, this.wallet.publicKey);
+    }
+
 
     const methods = this.program.methods as unknown as MatchingMethods;
     const tx = await methods
